@@ -1,5 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -22,6 +25,12 @@ public class MainWindow{
 
         Container contentPane = frame.getContentPane();
         JButton addButton = new JButton("追加");
+        addButton.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent event){
+                InputDialog dialog = new InputDialog(frame);
+                dialog.Show();
+            }
+        });
         contentPane.add(addButton, BorderLayout.CENTER);
 
         JTable listTable = new JTable(tabledata, columnNames);
