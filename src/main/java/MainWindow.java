@@ -1,11 +1,13 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +15,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class MainWindow{
     private String[] columnNames = {"品目", "タンパク質", "炭水化物", "脂質", "カロリー"};
+    private Object[] columnCalc = {"合計", 0.00, 0.00, 0.00, 0.00};
     private MainWindow mainWindow;
     private DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
     private JTable listTable;
@@ -47,6 +50,7 @@ public class MainWindow{
             }
         });
         contentPane.add(addButton, BorderLayout.CENTER);
+        tableModel.insertRow(0, columnCalc);
 
         JTable listTable = new JTable(tableModel);
         
