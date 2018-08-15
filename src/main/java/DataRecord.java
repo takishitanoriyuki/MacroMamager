@@ -2,15 +2,15 @@ public class DataRecord{
     //品名
     public String ItemName;
     //タンパク質
-    public float Protein;
+    public double Protein;
     //炭水化物
-    public float Carbohydrate;
+    public double Carbohydrate;
     //脂質
-    public float Lipid;
+    public double Lipid;
     //カロリー
-    public float Calorie;
+    public double Calorie;
 
-    public DataRecord(String inputItemName, float inputProtein, float inputCarbohydrate, float inputLipid, float inputCalorie){
+    public DataRecord(String inputItemName, double inputProtein, double inputCarbohydrate, double inputLipid, double inputCalorie){
         this.ItemName = inputItemName;
         this.Protein = inputProtein;
         this.Carbohydrate = inputCarbohydrate;
