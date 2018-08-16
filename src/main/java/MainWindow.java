@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -8,7 +9,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -21,6 +23,7 @@ public class MainWindow{
     private List<DataRecord> dataRecord = new ArrayList<DataRecord>();
     // テーブルモデル
     private DefaultTableModel tableModel;
+    private final String DELETE = "Delete";
 
     // コンストラクタ
     public MainWindow(){
@@ -84,7 +87,7 @@ public class MainWindow{
 
         Container contentPane = frame.getContentPane();
 
-        // 追加コマンドの実装
+        // 追加ボタンの実装
         JButton addButton = new JButton("追加");
         addButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
@@ -94,7 +97,49 @@ public class MainWindow{
         });
         contentPane.add(addButton, BorderLayout.CENTER);
 
-        JScrollPane sp = new JScrollPane(new JTable(this.tableModel));
+        // テーブルの実装
+        JTable table = new JTable(this.tableModel);
+        table.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent event){
+                // テーブルを右クリックしたときの処理
+                if(event.getButton() == MouseEvent.BUTTON3){
+                    int indexs[] = table.getSelectedRows();
+                    // 選択している行がないときは何もしない
+                    if(indexs.length == 0){
+                        return;
+                    }
+                    // 選択している行が合計の行だった場合
+                    for (int index : indexs) {
+                        if(index == 0){
+                            return;
+                        }
+                    }
+
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    // 削除メニューの実装
+                    JMenuItem menuItem = new JMenuItem("削除");
+                    menuItem.setActionCommand(DELETE);
+                    menuItem.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+                            // 削除メニュークリック時の処理
+                            if(e.getActionCommand() == DELETE){
+                                int indexs[] = table.getSelectedRows();
+                                for (int index : indexs) {
+                                    tableModel.removeRow(index);
+                                    dataRecord.remove(index - 1);
+                                    updateTable();
+                                }
+                            }
+						}
+                    });
+                    popupMenu.add(menuItem);
+                    popupMenu.show(event.getComponent(), event.getX(), event.getY());
+                }
+            }
+        });
+        JScrollPane sp = new JScrollPane(table);
         contentPane.add(sp, BorderLayout.SOUTH);
 
         frame.setVisible(true);
