@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -43,15 +44,35 @@ public class InputDialog{
                 //パラメータチェック
                 try {
                     inputProteinValue = Float.parseFloat(ProteinValue.getText());
-                    inputCarbohydrateValue = Float.parseFloat(CarbohydrateValue.getText());
-                    inputLipidValue = Float.parseFloat(LipidValue.getText());
-                    inputCalorieValue = Float.parseFloat(CalorieValue.getText());
-                    DataRecord record = new DataRecord(inputItemName, inputProteinValue, inputCarbohydrateValue, inputLipidValue, inputCalorieValue);
-                    mainWindow.SetRecord(record);
-                    Dialog.setVisible(false);
                 } catch (NumberFormatException e) {
-                    //Todo
+                    JOptionPane joption = new JOptionPane();
+                    joption.showMessageDialog(Dialog, "タンパク質は数字で入力してください。");
+                    return;
                 }
+                try{
+                    inputCarbohydrateValue = Float.parseFloat(CarbohydrateValue.getText());
+                } catch(NumberFormatException e){
+                    JOptionPane joption = new JOptionPane();
+                    joption.showMessageDialog(Dialog, "炭水化物は数字で入力してください。");
+                    return;
+                }
+                try{
+                    inputLipidValue = Float.parseFloat(LipidValue.getText());
+                }catch(NumberFormatException e){
+                    JOptionPane joption = new JOptionPane();
+                    joption.showMessageDialog(Dialog, "脂質は数字で入力してください。");
+                    return;
+                }
+                try{
+                    inputCalorieValue = Float.parseFloat(CalorieValue.getText());
+                }catch(NumberFormatException e){
+                    JOptionPane joption = new JOptionPane();
+                    joption.showMessageDialog(Dialog, "カロリーは数字で入力してください。");
+                    return;
+                }
+                DataRecord record = new DataRecord(inputItemName, inputProteinValue, inputCarbohydrateValue, inputLipidValue, inputCalorieValue);
+                mainWindow.SetRecord(record);
+                Dialog.setVisible(false);
             }
         });
         panel.add(label1);
