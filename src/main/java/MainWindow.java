@@ -15,7 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * メインウインドウ
+ */
 public class MainWindow{
     // このWindow
     private MainWindow mainWindow;
@@ -24,6 +26,7 @@ public class MainWindow{
     // テーブルモデル
     private DefaultTableModel tableModel;
     private final String DELETE = "Delete";
+    private final String EDITITEM = "EditItem";
 
     // コンストラクタ
     public MainWindow(){
@@ -53,7 +56,30 @@ public class MainWindow{
 
         // 合計を算出し、テーブルを更新する
         updateTable();
-}
+    }
+
+    /** 
+     * ダイアログで入力したデータでテーブルを更新する
+     */
+    public void EditRecord(int index, DataRecord editDataRecord){
+        // データを更新する
+        DataRecord record = this.dataRecord.get(index);
+        record.ItemName = editDataRecord.ItemName;
+        record.Protein = editDataRecord.Protein;
+        record.Carbohydrate = editDataRecord.Carbohydrate;
+        record.Lipid = editDataRecord.Lipid;
+        record.Calorie = editDataRecord.Calorie;
+
+        // テーブルを更新する
+        this.tableModel.setValueAt(record.ItemName, index + 1, 0);
+        this.tableModel.setValueAt(record.Protein, index + 1, 1);
+        this.tableModel.setValueAt(record.Carbohydrate, index + 1, 2);
+        this.tableModel.setValueAt(record.Lipid, index + 1, 3);
+        this.tableModel.setValueAt(record.Calorie, index + 1, 4);
+
+        // 合計を算出し、テーブルを更新する
+        updateTable();
+    }
 
     /**
      * データ初期化
@@ -116,10 +142,31 @@ public class MainWindow{
                     }
 
                     JPopupMenu popupMenu = new JPopupMenu();
+                    // 複数行選択している場合は編集メニューを表示しない
+                    if(indexs.length == 1){
+                        // 編集メニューの実装
+                        JMenuItem menuItemEdit = new JMenuItem("編集");
+                        menuItemEdit.setActionCommand(EDITITEM);
+                        menuItemEdit.addActionListener(new ActionListener(){
+    
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // 削除メニュークリック時の処理
+                                if(e.getActionCommand() == EDITITEM){
+                                    int index = table.getSelectedRow() - 1;
+                                    DataRecord record = dataRecord.get(index);
+                                    EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
+                                    dialog.Show();
+                                }
+                            }
+                        });
+                        popupMenu.add(menuItemEdit);
+                    }
+
                     // 削除メニューの実装
-                    JMenuItem menuItem = new JMenuItem("削除");
-                    menuItem.setActionCommand(DELETE);
-                    menuItem.addActionListener(new ActionListener(){
+                    JMenuItem menuItemDelele = new JMenuItem("削除");
+                    menuItemDelele.setActionCommand(DELETE);
+                    menuItemDelele.addActionListener(new ActionListener(){
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
@@ -134,7 +181,8 @@ public class MainWindow{
                             }
 						}
                     });
-                    popupMenu.add(menuItem);
+                    popupMenu.add(menuItemDelele);
+
                     popupMenu.show(event.getComponent(), event.getX(), event.getY());
                 }
             }

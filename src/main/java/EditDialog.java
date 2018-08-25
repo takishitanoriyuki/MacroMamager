@@ -14,14 +14,14 @@ import javax.swing.JTextField;
 /**
  * 入力ダイアログ
  */
-public class InputDialog{
+public class EditDialog{
     JDialog Dialog;
 
     /**
      * コンストラクタ
      */
-    public InputDialog(JFrame frame, MainWindow mainWindow){
-        inputDialog(frame, mainWindow);
+    public EditDialog(JFrame frame, MainWindow mainWindow, int index, DataRecord record){
+        editDialog(frame, mainWindow, index, record);
     }
 
     /**
@@ -34,7 +34,7 @@ public class InputDialog{
     /**
      * ダイアログ画面を作成する
      */
-    private void inputDialog(JFrame frame, MainWindow mainWindow){
+    private void editDialog(JFrame frame, MainWindow mainWindow, int index, DataRecord record){
         Dialog = new JDialog(frame);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
@@ -47,12 +47,12 @@ public class InputDialog{
         JLabel label3 = new JLabel("炭水化物");
         JLabel label4 = new JLabel("脂質");
         JLabel label5 = new JLabel("カロリー");
-        JTextField ItemName = new JTextField();
-        JTextField ProteinValue = new JTextField();
-        JTextField CarbohydrateValue = new JTextField();
-        JTextField LipidValue = new JTextField();
-        JTextField CalorieValue = new JTextField();
-        JButton registerButton = new JButton("登録");
+        JTextField ItemName = new JTextField(record.ItemName);
+        JTextField ProteinValue = new JTextField(Double.toString(record.Protein));
+        JTextField CarbohydrateValue = new JTextField(Double.toString(record.Carbohydrate));
+        JTextField LipidValue = new JTextField(Double.toString(record.Lipid));
+        JTextField CalorieValue = new JTextField(Double.toString(record.Calorie));
+        JButton registerButton = new JButton("修正");
 
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){
@@ -93,7 +93,7 @@ public class InputDialog{
                 }
                 // データの登録
                 DataRecord record = new DataRecord(inputItemName, inputProteinValue, inputCarbohydrateValue, inputLipidValue, inputCalorieValue);
-                mainWindow.SetRecord(record);
+                mainWindow.EditRecord(index, record);
 
                 // ダイアログを閉じる
                 Dialog.setVisible(false);
