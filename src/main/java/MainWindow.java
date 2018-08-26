@@ -48,10 +48,10 @@ public class MainWindow{
         // テーブルにデータを追加する
         Object[] row = new Object[5];
         row[0] = inputDataRecord.ItemName;
-        row[1] = inputDataRecord.Protein;
-        row[2] = inputDataRecord.Carbohydrate;
-        row[3] = inputDataRecord.Lipid;
-        row[4] = inputDataRecord.Calorie;
+        row[1] = String.format("%.2f", inputDataRecord.Protein);
+        row[2] = String.format("%.2f", inputDataRecord.Carbohydrate);
+        row[3] = String.format("%.2f", inputDataRecord.Lipid);
+        row[4] = String.format("%.2f", inputDataRecord.Calorie);
         this.tableModel.insertRow(this.tableModel.getRowCount(), row);
 
         // 合計を算出し、テーブルを更新する
@@ -72,10 +72,10 @@ public class MainWindow{
 
         // テーブルを更新する
         this.tableModel.setValueAt(record.ItemName, index + 1, 0);
-        this.tableModel.setValueAt(record.Protein, index + 1, 1);
-        this.tableModel.setValueAt(record.Carbohydrate, index + 1, 2);
-        this.tableModel.setValueAt(record.Lipid, index + 1, 3);
-        this.tableModel.setValueAt(record.Calorie, index + 1, 4);
+        this.tableModel.setValueAt(String.format("%.2f", record.Protein), index + 1, 1);
+        this.tableModel.setValueAt(String.format("%.2f", record.Carbohydrate), index + 1, 2);
+        this.tableModel.setValueAt(String.format("%.2f", record.Lipid), index + 1, 3);
+        this.tableModel.setValueAt(String.format("%.2f", record.Calorie), index + 1, 4);
 
         // 合計を算出し、テーブルを更新する
         updateTable();
@@ -207,9 +207,9 @@ public class MainWindow{
         }
 
         // 合計の行の値を更新する
-        this.tableModel.setValueAt(columnCalc.Protein, 0, 1);
-        this.tableModel.setValueAt(columnCalc.Carbohydrate, 0, 2);
-        this.tableModel.setValueAt(columnCalc.Lipid, 0, 3);
-        this.tableModel.setValueAt(columnCalc.Calorie, 0, 4);
+        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Protein), 0, 1);
+        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
+        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
+        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
     }
 }

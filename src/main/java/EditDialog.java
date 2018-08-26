@@ -48,10 +48,10 @@ public class EditDialog{
         JLabel label4 = new JLabel("脂質");
         JLabel label5 = new JLabel("カロリー");
         JTextField ItemName = new JTextField(record.ItemName);
-        JTextField ProteinValue = new JTextField(Double.toString(record.Protein));
-        JTextField CarbohydrateValue = new JTextField(Double.toString(record.Carbohydrate));
-        JTextField LipidValue = new JTextField(Double.toString(record.Lipid));
-        JTextField CalorieValue = new JTextField(Double.toString(record.Calorie));
+        JTextField ProteinValue = new JTextField(String.format("%.2f", record.Protein));
+        JTextField CarbohydrateValue = new JTextField(String.format("%.2f", record.Carbohydrate));
+        JTextField LipidValue = new JTextField(String.format("%.2f", record.Lipid));
+        JTextField CalorieValue = new JTextField(String.format("%.2f", record.Calorie));
         JButton registerButton = new JButton("修正");
 
         // 登録ボタン押下時の処理
