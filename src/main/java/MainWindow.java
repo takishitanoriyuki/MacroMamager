@@ -1,15 +1,25 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -25,6 +35,8 @@ public class MainWindow{
     private List<DataRecord> dataRecord = new ArrayList<DataRecord>();
     // テーブルモデル
     private DefaultTableModel tableModel;
+    // データにアクセスするオブジェクト
+    private DataAccess dataAccess;
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
 
@@ -113,7 +125,78 @@ public class MainWindow{
 
         Container contentPane = frame.getContentPane();
 
+        // 現在の日付を取得
+        Date today = new Date();
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy");
+        int year = Integer.parseInt(dateFormat1.format(today));
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("MM");
+        int month = Integer.parseInt(dateFormat2.format(today));
+        SimpleDateFormat dateFormat3 = new SimpleDateFormat("dd");
+        int day = Integer.parseInt(dateFormat3.format(today));
+
+        JPanel panel = new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JLabel label1 = new JLabel("年");
+        layout.setConstraints(label1, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 0.3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        String[] yearList = new String[] {String.format("%4d", year - 1), String.format("%4d", year), String.format("%4d", year + 1)};
+        JComboBox<String> comboYear = new JComboBox<String>(yearList);
+        comboYear.setSelectedIndex(1);
+        layout.setConstraints(comboYear, gbc);
+
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 0.1;
+        JLabel label2 = new JLabel("月");
+        layout.setConstraints(label2, gbc);
+
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        String[] monthList = new String[12];
+        for (int i = 1; i <= 12; i++) {
+            monthList[i-1] = String.format("%2d", i);
+        }
+        JComboBox<String> comboMonth = new JComboBox<String>(monthList);
+        comboMonth.setSelectedIndex(month - 1);
+        layout.setConstraints(comboMonth, gbc);
+
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        gbc.weightx = 0.1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JLabel label3 = new JLabel("日");
+        layout.setConstraints(label3, gbc);
+
+        gbc.gridx = 5;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        String[] dayList = new String[31];
+        for (int i = 1; i <= 31; i++) {
+            dayList[i-1] = String.format("%2d", i);
+        }
+        JComboBox<String> comboDay = new JComboBox<String>(dayList);
+        comboDay.setSelectedIndex(day - 1);
+        layout.setConstraints(comboDay, gbc);
+
+
         // 追加ボタンの実装
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 6;
+        gbc.weightx = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         JButton addButton = new JButton("追加");
         addButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
@@ -121,9 +204,15 @@ public class MainWindow{
                 dialog.Show();
             }
         });
-        contentPane.add(addButton, BorderLayout.CENTER);
+        layout.setConstraints(addButton, gbc);
 
         // テーブルの実装
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridwidth = 6;
+        gbc.weightx = 1;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
         JTable table = new JTable(this.tableModel);
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
@@ -187,8 +276,19 @@ public class MainWindow{
                 }
             }
         });
-        JScrollPane sp = new JScrollPane(table);
-        contentPane.add(sp, BorderLayout.SOUTH);
+        layout.setConstraints(table, gbc);
+
+        panel.setLayout(layout);
+        panel.add(label1);
+        panel.add(comboYear);
+        panel.add(label2);
+        panel.add(comboMonth);
+        panel.add(label3);
+        panel.add(comboDay);
+        panel.add(addButton);
+        panel.add(table);
+
+        contentPane.add(panel);
 
         frame.setVisible(true);
     }
