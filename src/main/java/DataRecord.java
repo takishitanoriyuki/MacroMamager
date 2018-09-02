@@ -10,6 +10,14 @@ public class DataRecord{
     //カロリー
     public double Calorie;
 
+    public DataRecord(){
+        this.ItemName = "";
+        this.Protein = 0.0;
+        this.Carbohydrate = 0.0;
+        this.Lipid = 0.0;
+        this.Calorie = 0.0;
+    }
+
     public DataRecord(String inputItemName, double inputProtein, double inputCarbohydrate, double inputLipid, double inputCalorie){
         this.ItemName = inputItemName;
         this.Protein = inputProtein;
