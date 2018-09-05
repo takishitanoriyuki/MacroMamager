@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.Marshaller.Listener;
 
 /**
  * メインウインドウ
@@ -32,6 +33,8 @@ public class MainWindow{
     private DefaultTableModel tableModel;
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
+    private int yearListTable[];
+
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
 
@@ -53,13 +56,7 @@ public class MainWindow{
         this.dataRecord.add(inputDataRecord);
 
         // テーブルにデータを追加する
-        Object[] row = new Object[5];
-        row[0] = inputDataRecord.ItemName;
-        row[1] = String.format("%.2f", inputDataRecord.Protein);
-        row[2] = String.format("%.2f", inputDataRecord.Carbohydrate);
-        row[3] = String.format("%.2f", inputDataRecord.Lipid);
-        row[4] = String.format("%.2f", inputDataRecord.Calorie);
-        this.tableModel.insertRow(this.tableModel.getRowCount(), row);
+        setTableFromRecord(inputDataRecord);
 
         // 合計を算出し、テーブルを更新する
         updateTable();
@@ -99,20 +96,14 @@ public class MainWindow{
      */
     private void initializeTable(){
         // カラムのタイトル
-        String[] columnNames = {"品目", "タンパク質", "炭水化物", "脂質", "カロリー"};
+        String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
 
         // テーブルモデルの初期化
         this.tableModel = new DefaultTableModel(columnNames, 0);
 
         // 合計の行を追加する
-        DataRecord columnCalc = new DataRecord("合計", 0.00, 0.00, 0.00, 0.00);
-        Object[] row = new Object[5];
-        row[0] = columnCalc.ItemName;
-        row[1] = columnCalc.Protein;
-        row[2] = columnCalc.Carbohydrate;
-        row[3] = columnCalc.Lipid;
-        row[4] = columnCalc.Calorie;
-        this.tableModel.insertRow(0, row);
+        DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
+        setTableFromRecord(columnCalc);
     }
 
     /**
@@ -137,7 +128,10 @@ public class MainWindow{
 
         // ファイルを開く
         this.dataAccess = new DataAccess(year, month, day);
+        this.dataRecord = this.dataAccess.OpenFile();
+        createTableFromRecords(this.dataRecord);
 
+        // Yearラベル
         JPanel panel = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -145,13 +139,15 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JLabel label1 = new JLabel("年");
+        JLabel label1 = new JLabel("Year");
         layout.setConstraints(label1, gbc);
 
+        // 年コンボボックス
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        yearListTable = new int[] {year - 1, year, year + 1};
         String[] yearList = new String[] {String.format("%4d", year - 1), String.format("%4d", year), String.format("%4d", year + 1)};
         JComboBox<String> comboYear = new JComboBox<String>(yearList);
         comboYear.setSelectedIndex(1);
@@ -160,7 +156,7 @@ public class MainWindow{
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 0.1;
-        JLabel label2 = new JLabel("月");
+        JLabel label2 = new JLabel("Month");
         layout.setConstraints(label2, gbc);
 
         gbc.gridx = 3;
@@ -179,7 +175,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JLabel label3 = new JLabel("日");
+        JLabel label3 = new JLabel("Day");
         layout.setConstraints(label3, gbc);
 
         gbc.gridx = 5;
@@ -194,6 +190,16 @@ public class MainWindow{
         comboDay.setSelectedIndex(day - 1);
         layout.setConstraints(comboDay, gbc);
 
+        // ComboBoxを選択したときのリスナーイベント
+        ActionListener eventListner = new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        comboYear.addActionListener(eventListner);
+        comboMonth.addActionListener(eventListner);
+        comboDay.addActionListener(eventListner);
 
         // 追加ボタンの実装
         gbc.gridx = 0;
@@ -201,7 +207,7 @@ public class MainWindow{
         gbc.gridwidth = 6;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JButton addButton = new JButton("追加");
+        JButton addButton = new JButton("ADD");
         addButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
                 InputDialog dialog = new InputDialog(frame, mainWindow);
@@ -220,66 +226,12 @@ public class MainWindow{
         JTable table = new JTable(this.tableModel);
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
-                // テーブルを右クリックしたときの処理
-                if(event.getButton() == MouseEvent.BUTTON3){
-                    int indexs[] = table.getSelectedRows();
-                    // 選択している行がないときは何もしない
-                    if(indexs.length == 0){
-                        return;
-                    }
-                    // 選択している行が合計の行だった場合
-                    for (int index : indexs) {
-                        if(index == 0){
-                            return;
-                        }
-                    }
-
-                    JPopupMenu popupMenu = new JPopupMenu();
-                    // 複数行選択している場合は編集メニューを表示しない
-                    if(indexs.length == 1){
-                        // 編集メニューの実装
-                        JMenuItem menuItemEdit = new JMenuItem("編集");
-                        menuItemEdit.setActionCommand(EDITITEM);
-                        menuItemEdit.addActionListener(new ActionListener(){
-    
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // 削除メニュークリック時の処理
-                                if(e.getActionCommand() == EDITITEM){
-                                    int index = table.getSelectedRow() - 1;
-                                    DataRecord record = dataRecord.get(index);
-                                    EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
-                                    dialog.Show();
-                                }
-                            }
-                        });
-                        popupMenu.add(menuItemEdit);
-                    }
-
-                    // 削除メニューの実装
-                    JMenuItem menuItemDelele = new JMenuItem("削除");
-                    menuItemDelele.setActionCommand(DELETE);
-                    menuItemDelele.addActionListener(new ActionListener(){
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-                            // 削除メニュークリック時の処理
-                            if(e.getActionCommand() == DELETE){
-                                int indexs[] = table.getSelectedRows();
-                                for (int index : indexs) {
-                                    tableModel.removeRow(index);
-                                    dataRecord.remove(index - 1);
-                                    updateTable();
-                                }
-                            }
-						}
-                    });
-                    popupMenu.add(menuItemDelele);
-
-                    popupMenu.show(event.getComponent(), event.getX(), event.getY());
-                }
             }
         });
+
+        // 合計を算出し、テーブルを更新する
+        updateTable();
+
         layout.setConstraints(table, gbc);
 
         panel.setLayout(layout);
@@ -301,7 +253,7 @@ public class MainWindow{
      * テーブル表示の更新
      */
     private void updateTable(){
-        DataRecord columnCalc = new DataRecord("合計", 0.00, 0.00, 0.00, 0.00);
+        DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
         // リストの全データの合計を求める
         for (DataRecord record : dataRecord) {
             columnCalc.Protein += record.Protein;
@@ -315,5 +267,33 @@ public class MainWindow{
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
+    }
+
+    /**
+     * レコードリストからテーブルを作成する
+     * @param records
+     */
+    private void createTableFromRecords(List<DataRecord> records){
+        if(this.tableModel.getRowCount() > 1){
+            while(this.tableModel.getRowCount() > 1)
+            this.tableModel.removeRow(1);            
+        }
+        for (DataRecord record : records) {
+            setTableFromRecord(record);
+        }
+    }
+
+    /**
+     * レコードからテーブルに設定する
+     * @param record
+     */
+    private void setTableFromRecord(DataRecord record){
+        Object[] row = new Object[5];
+        row[0] = record.ItemName;
+        row[1] = String.format("%.2f", record.Protein);
+        row[2] = String.format("%.2f", record.Carbohydrate);
+        row[3] = String.format("%.2f", record.Lipid);
+        row[4] = String.format("%.2f", record.Calorie);
+        this.tableModel.insertRow(this.tableModel.getRowCount(), row);
     }
 }

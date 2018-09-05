@@ -42,17 +42,17 @@ public class InputDialog{
         // コントロールの作成
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(5, 2));
-        JLabel label1 = new JLabel("品名");
-        JLabel label2 = new JLabel("タンパク質");
-        JLabel label3 = new JLabel("炭水化物");
-        JLabel label4 = new JLabel("脂質");
-        JLabel label5 = new JLabel("カロリー");
+        JLabel label1 = new JLabel("Item");
+        JLabel label2 = new JLabel("Protein");
+        JLabel label3 = new JLabel("Carbohydrate");
+        JLabel label4 = new JLabel("Lipid");
+        JLabel label5 = new JLabel("Calorie");
         JTextField ItemName = new JTextField();
         JTextField ProteinValue = new JTextField();
         JTextField CarbohydrateValue = new JTextField();
         JTextField LipidValue = new JTextField();
         JTextField CalorieValue = new JTextField();
-        JButton registerButton = new JButton("登録");
+        JButton registerButton = new JButton("ADD");
 
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){
@@ -67,28 +67,28 @@ public class InputDialog{
                     inputProteinValue = Float.parseFloat(ProteinValue.getText());
                 } catch (NumberFormatException e) {
                     JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "タンパク質は数字で入力してください。");
+                    joption.showMessageDialog(Dialog, "Please input proteins by numbers.");
                     return;
                 }
                 try{
                     inputCarbohydrateValue = Float.parseFloat(CarbohydrateValue.getText());
                 } catch(NumberFormatException e){
                     JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "炭水化物は数字で入力してください。");
+                    joption.showMessageDialog(Dialog, "Please input carbohydrate by numbers.");
                     return;
                 }
                 try{
                     inputLipidValue = Float.parseFloat(LipidValue.getText());
                 }catch(NumberFormatException e){
                     JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "脂質は数字で入力してください。");
+                    joption.showMessageDialog(Dialog, "Please input lipid by numbers.");
                     return;
                 }
                 try{
                     inputCalorieValue = Float.parseFloat(CalorieValue.getText());
                 }catch(NumberFormatException e){
                     JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "カロリーは数字で入力してください。");
+                    joption.showMessageDialog(Dialog, "Please input calorie by numbers.");
                     return;
                 }
                 // データの登録
