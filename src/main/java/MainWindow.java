@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.bind.Marshaller.Listener;
 
 /**
  * メインウインドウ
@@ -32,6 +33,8 @@ public class MainWindow{
     private DefaultTableModel tableModel;
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
+    private int yearListTable[];
+
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
 
@@ -128,6 +131,7 @@ public class MainWindow{
         this.dataRecord = this.dataAccess.OpenFile();
         createTableFromRecords(this.dataRecord);
 
+        // Yearラベル
         JPanel panel = new JPanel();
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints gbc = new GridBagConstraints();
@@ -138,10 +142,12 @@ public class MainWindow{
         JLabel label1 = new JLabel("Year");
         layout.setConstraints(label1, gbc);
 
+        // 年コンボボックス
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        yearListTable = new int[] {year - 1, year, year + 1};
         String[] yearList = new String[] {String.format("%4d", year - 1), String.format("%4d", year), String.format("%4d", year + 1)};
         JComboBox<String> comboYear = new JComboBox<String>(yearList);
         comboYear.setSelectedIndex(1);
@@ -184,6 +190,16 @@ public class MainWindow{
         comboDay.setSelectedIndex(day - 1);
         layout.setConstraints(comboDay, gbc);
 
+        // ComboBoxを選択したときのリスナーイベント
+        ActionListener eventListner = new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            }
+        };
+        comboYear.addActionListener(eventListner);
+        comboMonth.addActionListener(eventListner);
+        comboDay.addActionListener(eventListner);
 
         // 追加ボタンの実装
         gbc.gridx = 0;
@@ -210,64 +226,6 @@ public class MainWindow{
         JTable table = new JTable(this.tableModel);
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
-                // テーブルを右クリックしたときの処理
-                if(event.getButton() == MouseEvent.BUTTON3){
-                    int indexs[] = table.getSelectedRows();
-                    // 選択している行がないときは何もしない
-                    if(indexs.length == 0){
-                        return;
-                    }
-                    // 選択している行が合計の行だった場合
-                    for (int index : indexs) {
-                        if(index == 0){
-                            return;
-                        }
-                    }
-
-                    JPopupMenu popupMenu = new JPopupMenu();
-                    // 複数行選択している場合は編集メニューを表示しない
-                    if(indexs.length == 1){
-                        // 編集メニューの実装
-                        JMenuItem menuItemEdit = new JMenuItem("EDIT");
-                        menuItemEdit.setActionCommand(EDITITEM);
-                        menuItemEdit.addActionListener(new ActionListener(){
-    
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // 削除メニュークリック時の処理
-                                if(e.getActionCommand() == EDITITEM){
-                                    int index = table.getSelectedRow() - 1;
-                                    DataRecord record = dataRecord.get(index);
-                                    EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
-                                    dialog.Show();
-                                }
-                            }
-                        });
-                        popupMenu.add(menuItemEdit);
-                    }
-
-                    // 削除メニューの実装
-                    JMenuItem menuItemDelele = new JMenuItem("DELELE");
-                    menuItemDelele.setActionCommand(DELETE);
-                    menuItemDelele.addActionListener(new ActionListener(){
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-                            // 削除メニュークリック時の処理
-                            if(e.getActionCommand() == DELETE){
-                                int indexs[] = table.getSelectedRows();
-                                for (int index : indexs) {
-                                    tableModel.removeRow(index);
-                                    dataRecord.remove(index - 1);
-                                    updateTable();
-                                }
-                            }
-						}
-                    });
-                    popupMenu.add(menuItemDelele);
-
-                    popupMenu.show(event.getComponent(), event.getX(), event.getY());
-                }
             }
         });
 
@@ -316,6 +274,10 @@ public class MainWindow{
      * @param records
      */
     private void createTableFromRecords(List<DataRecord> records){
+        if(this.tableModel.getRowCount() > 1){
+            while(this.tableModel.getRowCount() > 1)
+            this.tableModel.removeRow(1);            
+        }
         for (DataRecord record : records) {
             setTableFromRecord(record);
         }
