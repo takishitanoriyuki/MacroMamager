@@ -53,13 +53,7 @@ public class MainWindow{
         this.dataRecord.add(inputDataRecord);
 
         // テーブルにデータを追加する
-        Object[] row = new Object[5];
-        row[0] = inputDataRecord.ItemName;
-        row[1] = String.format("%.2f", inputDataRecord.Protein);
-        row[2] = String.format("%.2f", inputDataRecord.Carbohydrate);
-        row[3] = String.format("%.2f", inputDataRecord.Lipid);
-        row[4] = String.format("%.2f", inputDataRecord.Calorie);
-        this.tableModel.insertRow(this.tableModel.getRowCount(), row);
+        setTableFromRecord(inputDataRecord);
 
         // 合計を算出し、テーブルを更新する
         updateTable();
@@ -106,13 +100,7 @@ public class MainWindow{
 
         // 合計の行を追加する
         DataRecord columnCalc = new DataRecord("合計", 0.00, 0.00, 0.00, 0.00);
-        Object[] row = new Object[5];
-        row[0] = columnCalc.ItemName;
-        row[1] = columnCalc.Protein;
-        row[2] = columnCalc.Carbohydrate;
-        row[3] = columnCalc.Lipid;
-        row[4] = columnCalc.Calorie;
-        this.tableModel.insertRow(0, row);
+        setTableFromRecord(columnCalc);
     }
 
     /**
@@ -137,6 +125,8 @@ public class MainWindow{
 
         // ファイルを開く
         this.dataAccess = new DataAccess(year, month, day);
+        this.dataRecord = this.dataAccess.OpenFile();
+        createTableFromRecords(this.dataRecord);
 
         JPanel panel = new JPanel();
         GridBagLayout layout = new GridBagLayout();
@@ -280,6 +270,10 @@ public class MainWindow{
                 }
             }
         });
+
+        // 合計を算出し、テーブルを更新する
+        updateTable();
+
         layout.setConstraints(table, gbc);
 
         panel.setLayout(layout);
@@ -315,5 +309,29 @@ public class MainWindow{
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
         this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
+    }
+
+    /**
+     * レコードリストからテーブルを作成する
+     * @param records
+     */
+    private void createTableFromRecords(List<DataRecord> records){
+        for (DataRecord record : records) {
+            setTableFromRecord(record);
+        }
+    }
+
+    /**
+     * レコードからテーブルに設定する
+     * @param record
+     */
+    private void setTableFromRecord(DataRecord record){
+        Object[] row = new Object[5];
+        row[0] = record.ItemName;
+        row[1] = String.format("%.2f", record.Protein);
+        row[2] = String.format("%.2f", record.Carbohydrate);
+        row[3] = String.format("%.2f", record.Lipid);
+        row[4] = String.format("%.2f", record.Calorie);
+        this.tableModel.insertRow(this.tableModel.getRowCount(), row);
     }
 }

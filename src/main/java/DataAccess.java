@@ -77,6 +77,8 @@ public class DataAccess{
                     record.Lipid = Float.parseFloat(words[3]);
                     record.Calorie = Float.parseFloat(words[4]);
                     records.add(record);
+
+                    line = br.readLine();
                 }
             } catch (IOException e) {
             }finally{
