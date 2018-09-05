@@ -93,13 +93,13 @@ public class MainWindow{
      */
     private void initializeTable(){
         // カラムのタイトル
-        String[] columnNames = {"品目", "タンパク質", "炭水化物", "脂質", "カロリー"};
+        String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
 
         // テーブルモデルの初期化
         this.tableModel = new DefaultTableModel(columnNames, 0);
 
         // 合計の行を追加する
-        DataRecord columnCalc = new DataRecord("合計", 0.00, 0.00, 0.00, 0.00);
+        DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
         setTableFromRecord(columnCalc);
     }
 
@@ -135,7 +135,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JLabel label1 = new JLabel("年");
+        JLabel label1 = new JLabel("Year");
         layout.setConstraints(label1, gbc);
 
         gbc.gridx = 1;
@@ -150,7 +150,7 @@ public class MainWindow{
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 0.1;
-        JLabel label2 = new JLabel("月");
+        JLabel label2 = new JLabel("Month");
         layout.setConstraints(label2, gbc);
 
         gbc.gridx = 3;
@@ -169,7 +169,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JLabel label3 = new JLabel("日");
+        JLabel label3 = new JLabel("Day");
         layout.setConstraints(label3, gbc);
 
         gbc.gridx = 5;
@@ -191,7 +191,7 @@ public class MainWindow{
         gbc.gridwidth = 6;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JButton addButton = new JButton("追加");
+        JButton addButton = new JButton("ADD");
         addButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
                 InputDialog dialog = new InputDialog(frame, mainWindow);
@@ -228,7 +228,7 @@ public class MainWindow{
                     // 複数行選択している場合は編集メニューを表示しない
                     if(indexs.length == 1){
                         // 編集メニューの実装
-                        JMenuItem menuItemEdit = new JMenuItem("編集");
+                        JMenuItem menuItemEdit = new JMenuItem("EDIT");
                         menuItemEdit.setActionCommand(EDITITEM);
                         menuItemEdit.addActionListener(new ActionListener(){
     
@@ -247,7 +247,7 @@ public class MainWindow{
                     }
 
                     // 削除メニューの実装
-                    JMenuItem menuItemDelele = new JMenuItem("削除");
+                    JMenuItem menuItemDelele = new JMenuItem("DELELE");
                     menuItemDelele.setActionCommand(DELETE);
                     menuItemDelele.addActionListener(new ActionListener(){
 
@@ -295,7 +295,7 @@ public class MainWindow{
      * テーブル表示の更新
      */
     private void updateTable(){
-        DataRecord columnCalc = new DataRecord("合計", 0.00, 0.00, 0.00, 0.00);
+        DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
         // リストの全データの合計を求める
         for (DataRecord record : dataRecord) {
             columnCalc.Protein += record.Protein;
