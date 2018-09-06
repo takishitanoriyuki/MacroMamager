@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-09-05T03:12:16" hostname="HP-Linux" time="0.002">
+<testsuite name="AppTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2018-09-06T13:05:58" hostname="HP-Linux" time="0.002">
   <properties/>
   <testcase name="testAppHasAGreeting" classname="AppTest" time="0.002"/>
   <system-out><![CDATA[]]></system-out>

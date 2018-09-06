@@ -14,6 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -114,6 +116,24 @@ public class MainWindow{
         frame.setSize(640, 480);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // メニュー
+        JMenuBar menubar = new JMenuBar();
+        JMenu OptionMenu = new JMenu("Option");
+        menubar.add(OptionMenu);
+        JMenuItem settingMenuItem = new JMenuItem("Setting");
+        OptionMenu.add(settingMenuItem);
+        settingMenuItem.addActionListener(new ActionListener(){
+        
+            /**
+             * メニューボタン押下処理
+             */
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                
+            }
+        });
+        frame.setJMenuBar(menubar);
 
         Container contentPane = frame.getContentPane();
 
@@ -226,6 +246,61 @@ public class MainWindow{
         JTable table = new JTable(this.tableModel);
         table.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
+                // テーブルを右クリックしたときの処理
+                if(event.getButton() == MouseEvent.BUTTON3){
+                    int indexs[] = table.getSelectedRows();
+                    // 選択している行がないときは何もしない
+                    if(indexs.length == 0){
+                        return;
+                    }
+                    // 選択している行が合計の行だった場合
+                    for (int index : indexs) {
+                        if(index == 0){
+                            return;
+                        }
+                    }
+                    JPopupMenu popupMenu = new JPopupMenu();
+                    // 複数行選択している場合は編集メニューを表示しない
+                    if(indexs.length == 1){
+                        // 編集メニューの実装
+                        JMenuItem menuItemEdit = new JMenuItem("編集");
+                        menuItemEdit.setActionCommand(EDITITEM);
+                        menuItemEdit.addActionListener(new ActionListener(){
+    
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // 削除メニュークリック時の処理
+                                if(e.getActionCommand() == EDITITEM){
+                                    int index = table.getSelectedRow() - 1;
+                                    DataRecord record = dataRecord.get(index);
+                                    EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
+                                    dialog.Show();
+                                }
+                            }
+                        });
+                        popupMenu.add(menuItemEdit);
+                    }
+
+                    // 削除メニューの実装
+                    JMenuItem menuItemDelele = new JMenuItem("削除");
+                    menuItemDelele.setActionCommand(DELETE);
+                    menuItemDelele.addActionListener(new ActionListener(){
+ 						@Override
+						public void actionPerformed(ActionEvent e) {
+                            // 削除メニュークリック時の処理
+                            if(e.getActionCommand() == DELETE){
+                                int indexs[] = table.getSelectedRows();
+                                for (int index : indexs) {
+                                    tableModel.removeRow(index);
+                                    dataRecord.remove(index - 1);
+                                    updateTable();
+                                }
+                            }
+						}
+                    });
+                    popupMenu.add(menuItemDelele);
+                    popupMenu.show(event.getComponent(), event.getX(), event.getY());
+                }
             }
         });
 
