@@ -1,27 +1,12 @@
-import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.*;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
-import javax.swing.JTable;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.bind.Marshaller.Listener;
 
 /**
  * メインウインドウ
@@ -130,7 +115,8 @@ public class MainWindow{
              */
             @Override
             public void actionPerformed(ActionEvent event) {
-                
+                TargetSetiingDialog dialog = new TargetSetiingDialog(frame, mainWindow);
+                dialog.Show();
             }
         });
         frame.setJMenuBar(menubar);
