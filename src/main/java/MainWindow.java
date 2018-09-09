@@ -20,7 +20,8 @@ public class MainWindow{
     private DefaultTableModel tableModel;
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
-    private int yearListTable[];
+    // 基本データ
+    private IBasicData basicData = new BasicData();
 
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
@@ -76,6 +77,13 @@ public class MainWindow{
         
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
+    }
+
+    public void SetBasicData(IBasicData inputBasicData){
+        this.basicData = inputBasicData;
+
+        // 合計を算出し、テーブルを更新する
+        updateTable();
     }
 
     /**
@@ -153,7 +161,6 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        yearListTable = new int[] {year - 1, year, year + 1};
         String[] yearList = new String[] {String.format("%4d", year - 1), String.format("%4d", year), String.format("%4d", year + 1)};
         JComboBox<String> comboYear = new JComboBox<String>(yearList);
         comboYear.setSelectedIndex(1);
@@ -324,10 +331,17 @@ public class MainWindow{
         }
 
         // 合計の行の値を更新する
-        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Protein), 0, 1);
-        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
-        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
-        this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
+        if(this.basicData.isExist() == true){
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, this.basicData.getProtein()), 0, 1);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Carbohydrate, this.basicData.getCarbohydrate()), 0, 2);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Lipid, this.basicData.getLipid()), 0, 3);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Calorie, this.basicData.getCalorie()), 0, 4);
+        }else{
+            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Protein), 0, 1);
+            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
+            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
+            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
+        }
     }
 
     /**
