@@ -43,17 +43,17 @@ public class BasicData implements IBasicData {
 
         // ファイルの存在を確認する
         if(this.DataFile.exists() != true){
-            // ファイルを作成する
-            try {
-				this.DataFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-            }
             // データ初期化
             this.Protein = 0.0;
             this.Carbohydrate = 0.0;
             this.Lipid = 0.0;
             this.Calorie = 0.0;
+            try {
+                PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(this.DataFile)));
+                pw.println(this.Protein + "," + this.Carbohydrate + "," + this.Lipid + "," + this.Calorie);
+                pw.close();
+            } catch (IOException e) {
+            }
         }else{
             // ファイルを開く
             try {
