@@ -26,10 +26,16 @@ public class BasicData implements IBasicData {
     //ファイルを読み込めたかどうか
     private boolean exist;
 
+    private static IBasicData basicData = new BasicData();
+
+    public static IBasicData getInstanse(){
+        return basicData;
+    }
+
     /**
      * コンストラクタ
      */
-    public BasicData(){
+    private BasicData(){
         // データフォルダがあることを確認する
         String currentDirName = new File(".").getAbsoluteFile().getParent();
         File dataDir = new File(currentDirName + "/" + this.DATA_DIR);

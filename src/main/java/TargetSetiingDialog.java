@@ -23,7 +23,7 @@ public class TargetSetiingDialog {
      * ダイアログ画面を作成する
      */
     private void targetSetiingDialog(JFrame frame,MainWindow mainWindow){
-        BasicData basicData = new BasicData();
+        IBasicData basicData = BasicData.getInstanse();
 
         Dialog = new JDialog(frame);
         Dialog.setSize(320, 240);
@@ -84,7 +84,7 @@ public class TargetSetiingDialog {
                 basicData.setLipid(inputLipidValue);
                 basicData.setCalorie(inputCalorieValue);
                 basicData.Save();
-                mainWindow.SetBasicData(basicData);
+                mainWindow.UpdateBasicData();
 
                 // ダイアログを閉じる
                 Dialog.setVisible(false);
