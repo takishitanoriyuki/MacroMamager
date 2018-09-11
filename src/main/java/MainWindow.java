@@ -106,7 +106,7 @@ public class MainWindow{
      */
     private void createWindow(){
         JFrame frame = new JFrame();
-        frame.setSize(800, 480);
+        frame.setSize(640, 480);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -332,30 +332,10 @@ public class MainWindow{
 
         // 合計の行の値を更新する
         if(this.basicData.isExist() == true){
-            if(this.basicData.getProtein() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, this.basicData.getProtein()), 0, 1);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Protein, this.basicData.getProtein(),
-                    columnCalc.Protein / this.basicData.getProtein() * 100), 0, 1);
-            }
-            if(this.basicData.getCarbohydrate() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, this.basicData.getCarbohydrate()), 0, 2);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Carbohydrate, this.basicData.getCarbohydrate(),
-                    columnCalc.Carbohydrate / this.basicData.getCarbohydrate() * 100), 0, 2);
-            }
-            if(this.basicData.getLipid() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Lipid, this.basicData.getLipid()), 0, 3);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Lipid, this.basicData.getLipid(),
-                    columnCalc.Lipid / this.basicData.getLipid() * 100), 0, 3);
-            }
-            if(this.basicData.getCalorie() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, this.basicData.getCalorie()), 0, 4);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Calorie, this.basicData.getCalorie(),
-                    columnCalc.Calorie / this.basicData.getCalorie() * 100), 0, 4);
-            }
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, this.basicData.getProtein()), 0, 1);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Carbohydrate, this.basicData.getCarbohydrate()), 0, 2);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Lipid, this.basicData.getLipid()), 0, 3);
+            this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Calorie, this.basicData.getCalorie()), 0, 4);
         }else{
             this.tableModel.setValueAt(String.format("%.2f", columnCalc.Protein), 0, 1);
             this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
