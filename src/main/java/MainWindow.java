@@ -94,13 +94,7 @@ public class MainWindow{
         String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
 
         // テーブルモデルの初期化
-        this.tableModel = new DefaultTableModel(columnNames, 0){
-
-            // セルを編集できないようにする
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }};
+        this.tableModel = new DefaultTableModel(columnNames, 0);
 
         // 合計の行を追加する
         DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
