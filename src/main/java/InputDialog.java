@@ -35,7 +35,7 @@ public class InputDialog{
      * ダイアログ画面を作成する
      */
     private void inputDialog(JFrame frame, MainWindow mainWindow){
-        Dialog = new JDialog(frame);
+        Dialog = new JDialog(frame, true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 
