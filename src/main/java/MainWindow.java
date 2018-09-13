@@ -23,6 +23,7 @@ public class MainWindow{
 
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
+    private final String COPY = "Copy";
 
     // コンストラクタ
     public MainWindow(){
@@ -54,7 +55,7 @@ public class MainWindow{
     /** 
      * ダイアログで入力したデータでテーブルを更新する
      */
-    public void EditRecord(int index, DataRecord editDataRecord){
+    public void EditRecord(int index, DataRecord editDataRecord) {
         // データを更新する
         DataRecord record = this.dataRecord.get(index);
         record.ItemName = editDataRecord.ItemName;
@@ -258,7 +259,7 @@ public class MainWindow{
                     // 複数行選択している場合は編集メニューを表示しない
                     if(indexs.length == 1){
                         // 編集メニューの実装
-                        JMenuItem menuItemEdit = new JMenuItem("編集");
+                        JMenuItem menuItemEdit = new JMenuItem("EDIT");
                         menuItemEdit.setActionCommand(EDITITEM);
                         menuItemEdit.addActionListener(new ActionListener(){
     
@@ -274,10 +275,33 @@ public class MainWindow{
                             }
                         });
                         popupMenu.add(menuItemEdit);
+
+                        // 複製メニューの実装
+                        JMenuItem menuItemCopy = new JMenuItem("COPY");
+                        menuItemCopy.setActionCommand(COPY);
+                        menuItemCopy.addActionListener(new ActionListener(){
+                        
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                // 削除メニュークリック時の処理
+                                if(e.getActionCommand() == COPY){
+                                    int index = table.getSelectedRow() - 1;
+                                    DataRecord record = dataRecord.get(index);
+                                    DataRecord copiedRecord = new DataRecord();
+                                    copiedRecord.ItemName = record.ItemName;
+                                    copiedRecord.Protein = record.Protein;
+                                    copiedRecord.Carbohydrate = record.Carbohydrate;
+                                    copiedRecord.Lipid = record.Lipid;
+                                    copiedRecord.Calorie = record.Calorie;
+                                    SetRecord(copiedRecord);
+                                }
+                            }
+                        });
+                        popupMenu.add(menuItemCopy);
                     }
 
                     // 削除メニューの実装
-                    JMenuItem menuItemDelele = new JMenuItem("削除");
+                    JMenuItem menuItemDelele = new JMenuItem("DELETE");
                     menuItemDelele.setActionCommand(DELETE);
                     menuItemDelele.addActionListener(new ActionListener(){
  						@Override
