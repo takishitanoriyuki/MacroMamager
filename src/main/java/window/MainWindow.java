@@ -1,12 +1,20 @@
+package window;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import adapter.TableClickAdapter;
+import dialog.*;
+import model.*;
+import window.parts.CreateMenubar;
+import window.parts.TableAccess;
 
 /**
  * メインウインドウ
@@ -21,9 +29,6 @@ public class MainWindow{
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
 
-    private final String DELETE = "Delete";
-    private final String EDITITEM = "EditItem";
-    private final String COPY = "Copy";
 
     // コンストラクタ
     public MainWindow(){
@@ -46,7 +51,7 @@ public class MainWindow{
         setTableFromRecord(inputDataRecord);
 
         // 合計を算出し、テーブルを更新する
-        updateTable();
+        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
 
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -72,7 +77,7 @@ public class MainWindow{
         this.tableModel.setValueAt(String.format("%.2f", record.Calorie), index + 1, 4);
 
         // 合計を算出し、テーブルを更新する
-        updateTable();
+        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
         
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -80,7 +85,7 @@ public class MainWindow{
 
     public void UpdateBasicData(){
         // 合計を算出し、テーブルを更新する
-        updateTable();
+        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
     }
 
     /**
@@ -114,22 +119,7 @@ public class MainWindow{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // メニュー
-        JMenuBar menubar = new JMenuBar();
-        JMenu OptionMenu = new JMenu("Option");
-        menubar.add(OptionMenu);
-        JMenuItem settingMenuItem = new JMenuItem("Setting");
-        OptionMenu.add(settingMenuItem);
-        settingMenuItem.addActionListener(new ActionListener(){
-        
-            /**
-             * メニューボタン押下処理
-             */
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                TargetSetiingDialog dialog = new TargetSetiingDialog(frame, mainWindow);
-                dialog.Show();
-            }
-        });
+        JMenuBar menubar = CreateMenubar.Create(frame, this);
         frame.setJMenuBar(menubar);
 
         Container contentPane = frame.getContentPane();
@@ -240,91 +230,11 @@ public class MainWindow{
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         JTable table = new JTable(this.tableModel);
-        table.addMouseListener(new MouseAdapter(){
-            public void mouseClicked(MouseEvent event){
-                // テーブルを右クリックしたときの処理
-                if(event.getButton() == MouseEvent.BUTTON3){
-                    int indexs[] = table.getSelectedRows();
-                    // 選択している行がないときは何もしない
-                    if(indexs.length == 0){
-                        return;
-                    }
-                    // 選択している行が合計の行だった場合
-                    for (int index : indexs) {
-                        if(index == 0){
-                            return;
-                        }
-                    }
-                    JPopupMenu popupMenu = new JPopupMenu();
-                    // 複数行選択している場合は編集メニューを表示しない
-                    if(indexs.length == 1){
-                        // 編集メニューの実装
-                        JMenuItem menuItemEdit = new JMenuItem("EDIT");
-                        menuItemEdit.setActionCommand(EDITITEM);
-                        menuItemEdit.addActionListener(new ActionListener(){
-    
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // 削除メニュークリック時の処理
-                                if(e.getActionCommand() == EDITITEM){
-                                    int index = table.getSelectedRow() - 1;
-                                    DataRecord record = dataRecord.get(index);
-                                    EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
-                                    dialog.Show();
-                                }
-                            }
-                        });
-                        popupMenu.add(menuItemEdit);
-
-                        // 複製メニューの実装
-                        JMenuItem menuItemCopy = new JMenuItem("COPY");
-                        menuItemCopy.setActionCommand(COPY);
-                        menuItemCopy.addActionListener(new ActionListener(){
-                        
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                // 削除メニュークリック時の処理
-                                if(e.getActionCommand() == COPY){
-                                    int index = table.getSelectedRow() - 1;
-                                    DataRecord record = dataRecord.get(index);
-                                    DataRecord copiedRecord = new DataRecord();
-                                    copiedRecord.ItemName = record.ItemName;
-                                    copiedRecord.Protein = record.Protein;
-                                    copiedRecord.Carbohydrate = record.Carbohydrate;
-                                    copiedRecord.Lipid = record.Lipid;
-                                    copiedRecord.Calorie = record.Calorie;
-                                    SetRecord(copiedRecord);
-                                }
-                            }
-                        });
-                        popupMenu.add(menuItemCopy);
-                    }
-
-                    // 削除メニューの実装
-                    JMenuItem menuItemDelele = new JMenuItem("DELETE");
-                    menuItemDelele.setActionCommand(DELETE);
-                    menuItemDelele.addActionListener(new ActionListener(){
- 						@Override
-						public void actionPerformed(ActionEvent e) {
-                            // 削除メニュークリック時の処理
-                            if(e.getActionCommand() == DELETE){
-                                int indexs[] = table.getSelectedRows();
-                                for (int index : indexs) {
-                                    tableModel.removeRow(index);
-                                    dataRecord.remove(index - 1);
-                                    updateTable();
-                                }
-                            }
-						}
-                    });
-                    popupMenu.add(menuItemDelele);
-                    popupMenu.show(event.getComponent(), event.getX(), event.getY());
-                }
-            }
-        });
+        TableClickAdapter adapter = new TableClickAdapter(this, frame, table, this.tableModel, this.dataRecord);
+        table.addMouseListener(adapter);
 
         // 合計を算出し、テーブルを更新する
-        updateTable();
+        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
 
         layout.setConstraints(table, gbc);
 
@@ -341,54 +251,6 @@ public class MainWindow{
         contentPane.add(panel);
 
         frame.setVisible(true);
-    }
-
-    /**
-     * テーブル表示の更新
-     */
-    private void updateTable(){
-        DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
-        // リストの全データの合計を求める
-        for (DataRecord record : dataRecord) {
-            columnCalc.Protein += record.Protein;
-            columnCalc.Carbohydrate += record.Carbohydrate;
-            columnCalc.Lipid += record.Lipid;
-            columnCalc.Calorie += record.Calorie;
-        }
-
-        IBasicData basicData = BasicData.getInstanse();
-        // 合計の行の値を更新する
-        if(basicData.isExist() == true){
-            if(basicData.getProtein() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, basicData.getProtein()), 0, 1);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Protein, basicData.getProtein(),
-                    columnCalc.Protein / basicData.getProtein() * 100), 0, 1);
-            }
-            if(basicData.getCarbohydrate() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, basicData.getCarbohydrate()), 0, 2);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Carbohydrate, basicData.getCarbohydrate(),
-                    columnCalc.Carbohydrate / basicData.getCarbohydrate() * 100), 0, 2);
-            }
-            if(basicData.getLipid() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Lipid, basicData.getLipid()), 0, 3);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Lipid, basicData.getLipid(),
-                    columnCalc.Lipid / basicData.getLipid() * 100), 0, 3);
-            }
-            if(basicData.getCalorie() == 0){
-                this.tableModel.setValueAt(String.format("%.2f / %.2f", columnCalc.Protein, basicData.getCalorie()), 0, 4);
-            }else{
-                this.tableModel.setValueAt(String.format("%.2f / %.2f (%3.1f%%)", columnCalc.Calorie, basicData.getCalorie(),
-                    columnCalc.Calorie / basicData.getCalorie() * 100), 0, 4);
-            }
-        }else{
-            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Protein), 0, 1);
-            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Carbohydrate), 0, 2);
-            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Lipid), 0, 3);
-            this.tableModel.setValueAt(String.format("%.2f", columnCalc.Calorie), 0, 4);
-        }
     }
 
     /**

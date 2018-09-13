@@ -1,7 +1,11 @@
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+package dialog;
+
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import model.*;
+import window.MainWindow;
 
 public class TargetSetiingDialog {
     JDialog Dialog;
