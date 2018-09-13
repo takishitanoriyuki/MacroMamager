@@ -35,7 +35,7 @@ public class EditDialog{
      * ダイアログ画面を作成する
      */
     private void editDialog(JFrame frame, MainWindow mainWindow, int index, DataRecord record){
-        Dialog = new JDialog(frame);
+        Dialog = new JDialog(frame, true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 
@@ -52,7 +52,7 @@ public class EditDialog{
         JTextField CarbohydrateValue = new JTextField(String.format("%.2f", record.Carbohydrate));
         JTextField LipidValue = new JTextField(String.format("%.2f", record.Lipid));
         JTextField CalorieValue = new JTextField(String.format("%.2f", record.Calorie));
-        JButton registerButton = new JButton("修正");
+        JButton registerButton = new JButton("MODIFY");
 
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){

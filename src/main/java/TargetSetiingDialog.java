@@ -25,7 +25,7 @@ public class TargetSetiingDialog {
     private void targetSetiingDialog(JFrame frame,MainWindow mainWindow){
         BasicData basicData = new BasicData();
 
-        Dialog = new JDialog(frame);
+        Dialog = new JDialog(frame, true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 
