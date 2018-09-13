@@ -1,3 +1,5 @@
+package model;
+
 public class DataRecord{
     //品名
     public String ItemName;

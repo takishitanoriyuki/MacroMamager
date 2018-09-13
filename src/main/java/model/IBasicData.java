@@ -1,4 +1,6 @@
-public interface IBasicData{
+package model;
+
+public interface IBasicData {
     /**
      * タンパク質
      * @return

@@ -1,15 +1,13 @@
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+package dialog;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+
+import model.DataRecord;
+import other.GetValueFromTextField;
+import window.MainWindow;
 
 /**
  * 入力ダイアログ
@@ -58,41 +56,8 @@ public class EditDialog{
         registerButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
                 String inputItemName = ItemName.getText();
-                float inputProteinValue;
-                float inputCarbohydrateValue;
-                float inputLipidValue;
-                float inputCalorieValue;
-                //パラメータチェック
-                try {
-                    inputProteinValue = Float.parseFloat(ProteinValue.getText());
-                } catch (NumberFormatException e) {
-                    JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "Please input proteins by numbers.");
-                    return;
-                }
-                try{
-                    inputCarbohydrateValue = Float.parseFloat(CarbohydrateValue.getText());
-                } catch(NumberFormatException e){
-                    JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "Please input carbohydrate by numbers.");
-                    return;
-                }
-                try{
-                    inputLipidValue = Float.parseFloat(LipidValue.getText());
-                }catch(NumberFormatException e){
-                    JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "Please input lipid by numbers.");
-                    return;
-                }
-                try{
-                    inputCalorieValue = Float.parseFloat(CalorieValue.getText());
-                }catch(NumberFormatException e){
-                    JOptionPane joption = new JOptionPane();
-                    joption.showMessageDialog(Dialog, "Please input calorie by numbers.");
-                    return;
-                }
-                // データの登録
-                DataRecord record = new DataRecord(inputItemName, inputProteinValue, inputCarbohydrateValue, inputLipidValue, inputCalorieValue);
+                DataRecord record = GetValueFromTextField.GetValue(Dialog, ProteinValue, CarbohydrateValue, LipidValue, CalorieValue);
+                record.ItemName = inputItemName;
                 mainWindow.EditRecord(index, record);
 
                 // ダイアログを閉じる
