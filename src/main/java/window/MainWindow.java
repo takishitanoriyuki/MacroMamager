@@ -10,11 +10,11 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import adapter.AddButtonClickAdapter;
 import adapter.TableClickAdapter;
 import dialog.*;
 import model.*;
-import window.parts.CreateMenubar;
-import window.parts.TableAccess;
+import window.parts.*;
 
 /**
  * メインウインドウ
@@ -154,8 +154,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        String[] yearList = new String[] {String.format("%4d", year - 1), String.format("%4d", year), String.format("%4d", year + 1)};
-        JComboBox<String> comboYear = new JComboBox<String>(yearList);
+        JComboBox<String> comboYear = DateComboBox.CreateYearComboBox(year);
         comboYear.setSelectedIndex(1);
         layout.setConstraints(comboYear, gbc);
 
@@ -169,11 +168,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        String[] monthList = new String[12];
-        for (int i = 1; i <= 12; i++) {
-            monthList[i-1] = String.format("%2d", i);
-        }
-        JComboBox<String> comboMonth = new JComboBox<String>(monthList);
+        JComboBox<String> comboMonth = DateComboBox.CreateMonthComboBox();
         comboMonth.setSelectedIndex(month - 1);
         layout.setConstraints(comboMonth, gbc);
 
@@ -188,11 +183,7 @@ public class MainWindow{
         gbc.gridy = 0;
         gbc.weightx = 0.2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        String[] dayList = new String[31];
-        for (int i = 1; i <= 31; i++) {
-            dayList[i-1] = String.format("%2d", i);
-        }
-        JComboBox<String> comboDay = new JComboBox<String>(dayList);
+        JComboBox<String> comboDay = DateComboBox.CreateDayComboBox();
         comboDay.setSelectedIndex(day - 1);
         layout.setConstraints(comboDay, gbc);
 
@@ -201,6 +192,12 @@ public class MainWindow{
         
             @Override
             public void actionPerformed(ActionEvent e) {
+                int year = DateComboBox.GetValueFromComboBox(comboYear);
+                int month = DateComboBox.GetValueFromComboBox(comboMonth);
+                int day = DateComboBox.GetValueFromComboBox(comboDay);
+                dataAccess = new DataAccess(year, month, day);
+                dataRecord = dataAccess.OpenFile();
+                createTableFromRecords(dataRecord);
             }
         };
         comboYear.addActionListener(eventListner);
@@ -214,12 +211,8 @@ public class MainWindow{
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         JButton addButton = new JButton("ADD");
-        addButton.addMouseListener(new MouseAdapter(){
-            public void mouseClicked(MouseEvent event){
-                InputDialog dialog = new InputDialog(frame, mainWindow);
-                dialog.Show();
-            }
-        });
+        AddButtonClickAdapter addButtonClickAdapter = new AddButtonClickAdapter(frame, this);
+        addButton.addMouseListener(addButtonClickAdapter);
         layout.setConstraints(addButton, gbc);
 
         // テーブルの実装
@@ -230,8 +223,8 @@ public class MainWindow{
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
         JTable table = new JTable(this.tableModel);
-        TableClickAdapter adapter = new TableClickAdapter(this, frame, table, this.tableModel, this.dataRecord);
-        table.addMouseListener(adapter);
+        TableClickAdapter tableClickAdapter = new TableClickAdapter(this, frame, table, this.tableModel, this.dataRecord);
+        table.addMouseListener(tableClickAdapter);
 
         // 合計を算出し、テーブルを更新する
         TableAccess.UpdateTable(this.dataRecord, this.tableModel);
