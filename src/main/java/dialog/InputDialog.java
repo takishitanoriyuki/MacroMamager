@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import model.DataRecord;
 import other.GetValueFromTextField;
-import window.MainWindow;
+import window.*;
 
 /**
  * 入力ダイアログ
@@ -18,8 +18,8 @@ public class InputDialog{
     /**
      * コンストラクタ
      */
-    public InputDialog(JFrame frame, MainWindow mainWindow){
-        inputDialog(frame, mainWindow);
+    public InputDialog(IMainWindow mainWindow){
+        inputDialog(mainWindow);
     }
 
     /**
@@ -32,8 +32,8 @@ public class InputDialog{
     /**
      * ダイアログ画面を作成する
      */
-    private void inputDialog(JFrame frame, MainWindow mainWindow){
-        Dialog = new JDialog(frame, true);
+    private void inputDialog(IMainWindow mainWindow){
+        Dialog = new JDialog(mainWindow.getFrame(), true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 

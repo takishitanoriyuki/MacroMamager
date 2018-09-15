@@ -1,22 +1,17 @@
 package adapter;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
-import javax.swing.JFrame;
-
-import dialog.InputDialog;
-import window.MainWindow;
+import dialog.*;
+import window.*;
 
 public class AddButtonClickAdapter extends MouseAdapter {
-    private JFrame frame;
-    private MainWindow mainWindow;
+    private IMainWindow mainWindow;
 
     /**
      * コンストラクタ
      */
-    public AddButtonClickAdapter(JFrame frame, MainWindow main){
-        this.frame = frame;
+    public AddButtonClickAdapter(IMainWindow main){
         this.mainWindow = main;
     }
 
@@ -24,7 +19,7 @@ public class AddButtonClickAdapter extends MouseAdapter {
      * ボタンクリック時の処理
      */
     public void mouseClicked(MouseEvent event){
-        InputDialog dialog = new InputDialog(frame, mainWindow);
+        InputDialog dialog = new InputDialog(this.mainWindow);
         dialog.Show();
     }
 

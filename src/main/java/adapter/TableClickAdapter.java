@@ -8,32 +8,25 @@ import javax.swing.table.DefaultTableModel;
 
 import dialog.EditDialog;
 import model.DataRecord;
-import window.MainWindow;
-import window.parts.TableAccess;
+import window.*;
+import window.parts.*;
 
 public class TableClickAdapter extends MouseAdapter {
-    private MainWindow mainWindow;
-    private JFrame frame;
-    private JTable table;
-    private DefaultTableModel tableModel;
+    private IMainWindow mainWindow;
     private List<DataRecord> dataRecord;
 
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
     private final String COPY = "Copy";
 
-    public TableClickAdapter(MainWindow main, JFrame frame, JTable inputTable, DefaultTableModel inputTableModel, List<DataRecord> list){
+    public TableClickAdapter(IMainWindow main, List<DataRecord> list){
         this.mainWindow = main;
-        this.frame = frame;
-        this.table = inputTable;
-        this.tableModel = inputTableModel;
-        this.dataRecord = list;
     }
 
     public void mouseClicked(MouseEvent event){
         // テーブルを右クリックしたときの処理
         if(event.getButton() == MouseEvent.BUTTON3){
-            int indexs[] = this.table.getSelectedRows();
+            int indexs[] = this.mainWindow.getTable().getSelectedRows();
             // 選択している行がないときは何もしない
             if(indexs.length == 0){
                 return;
@@ -56,9 +49,9 @@ public class TableClickAdapter extends MouseAdapter {
                     public void actionPerformed(ActionEvent e) {
                         // 削除メニュークリック時の処理
                         if(e.getActionCommand() == EDITITEM){
-                            int index = table.getSelectedRow() - 1;
+                            int index = mainWindow.getTable().getSelectedRow() - 1;
                             DataRecord record = dataRecord.get(index);
-                            EditDialog dialog = new EditDialog(frame, mainWindow, index, record);
+                            EditDialog dialog = new EditDialog(mainWindow, index, record);
                             dialog.Show();
                         }
                     }
@@ -74,7 +67,7 @@ public class TableClickAdapter extends MouseAdapter {
                     public void actionPerformed(ActionEvent e) {
                         // 削除メニュークリック時の処理
                         if(e.getActionCommand() == COPY){
-                            int index = table.getSelectedRow() - 1;
+                            int index = mainWindow.getTable().getSelectedRow() - 1;
                             DataRecord record = dataRecord.get(index);
                             DataRecord copiedRecord = new DataRecord();
                             copiedRecord.ItemName = record.ItemName;
@@ -97,11 +90,11 @@ public class TableClickAdapter extends MouseAdapter {
                 public void actionPerformed(ActionEvent e) {
                     // 削除メニュークリック時の処理
                     if(e.getActionCommand() == DELETE){
-                        int indexs[] = table.getSelectedRows();
+                        int indexs[] = mainWindow.getTable().getSelectedRows();
                         for (int index : indexs) {
-                            tableModel.removeRow(index);
+                            mainWindow.getTableModel().removeRow(index);
                             dataRecord.remove(index - 1);
-                            TableAccess.UpdateTable(dataRecord, tableModel);
+                            TableAccess.UpdateTable(dataRecord, mainWindow.getTableModel());
                         }
                     }
                 }

@@ -10,30 +10,46 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
-import adapter.AddButtonClickAdapter;
-import adapter.TableClickAdapter;
-import dialog.*;
+import adapter.*;
 import model.*;
 import window.parts.*;
 
 /**
  * メインウインドウ
  */
-public class MainWindow{
-    // このWindow
-    private MainWindow mainWindow;
+public class MainWindow implements IMainWindow{
     // データリスト
     private List<DataRecord> dataRecord = new ArrayList<DataRecord>();
+    private JFrame frame;
+    private JTable table;
     // テーブルモデル
     private DefaultTableModel tableModel;
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
 
+    /**
+     * JFrameを返す
+     */
+    public JFrame getFrame(){
+        return this.frame;
+    }
+
+    /**
+     * JTableを返す
+     */
+    public JTable getTable(){
+        return this.table;
+    }
+
+    /**
+     * TableModelを返す
+     */
+    public DefaultTableModel getTableModel(){
+        return this.tableModel;
+    }
 
     // コンストラクタ
     public MainWindow(){
-        // 自分自身を保持
-        this.mainWindow = this;
         // データ初期化
         initializeTable();
         // Window作成
@@ -113,16 +129,16 @@ public class MainWindow{
      * Window作成
      */
     private void createWindow(){
-        JFrame frame = new JFrame();
-        frame.setSize(800, 480);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame = new JFrame();
+        this.frame.setSize(800, 480);
+        this.frame.setLocationRelativeTo(null);
+        this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // メニュー
-        JMenuBar menubar = CreateMenubar.Create(frame, this);
-        frame.setJMenuBar(menubar);
+        JMenuBar menubar = CreateMenubar.Create(this);
+        this.frame.setJMenuBar(menubar);
 
-        Container contentPane = frame.getContentPane();
+        Container contentPane = this.frame.getContentPane();
 
         // 現在の日付を取得
         Date today = new Date();
@@ -211,7 +227,7 @@ public class MainWindow{
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         JButton addButton = new JButton("ADD");
-        AddButtonClickAdapter addButtonClickAdapter = new AddButtonClickAdapter(frame, this);
+        AddButtonClickAdapter addButtonClickAdapter = new AddButtonClickAdapter(this);
         addButton.addMouseListener(addButtonClickAdapter);
         layout.setConstraints(addButton, gbc);
 
@@ -222,9 +238,9 @@ public class MainWindow{
         gbc.weightx = 1;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-        JTable table = new JTable(this.tableModel);
-        TableClickAdapter tableClickAdapter = new TableClickAdapter(this, frame, table, this.tableModel, this.dataRecord);
-        table.addMouseListener(tableClickAdapter);
+        this.table = new JTable(this.tableModel);
+        TableClickAdapter tableClickAdapter = new TableClickAdapter(this, this.dataRecord);
+        this.table.addMouseListener(tableClickAdapter);
 
         // 合計を算出し、テーブルを更新する
         TableAccess.UpdateTable(this.dataRecord, this.tableModel);
@@ -243,7 +259,7 @@ public class MainWindow{
 
         contentPane.add(panel);
 
-        frame.setVisible(true);
+        this.frame.setVisible(true);
     }
 
     /**

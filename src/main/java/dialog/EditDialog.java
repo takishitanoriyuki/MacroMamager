@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import model.DataRecord;
 import other.GetValueFromTextField;
-import window.MainWindow;
+import window.*;
 
 /**
  * 入力ダイアログ
@@ -18,8 +18,8 @@ public class EditDialog{
     /**
      * コンストラクタ
      */
-    public EditDialog(JFrame frame, MainWindow mainWindow, int index, DataRecord record){
-        editDialog(frame, mainWindow, index, record);
+    public EditDialog(IMainWindow mainWindow, int index, DataRecord record){
+        editDialog(mainWindow, index, record);
     }
 
     /**
@@ -32,8 +32,8 @@ public class EditDialog{
     /**
      * ダイアログ画面を作成する
      */
-    private void editDialog(JFrame frame, MainWindow mainWindow, int index, DataRecord record){
-        Dialog = new JDialog(frame, true);
+    private void editDialog(IMainWindow mainWindow, int index, DataRecord record){
+        Dialog = new JDialog(mainWindow.getFrame(), true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 

@@ -6,10 +6,10 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 import dialog.TargetSetiingDialog;
-import window.MainWindow;
+import window.*;
 
 public class CreateMenubar {
-    public static JMenuBar Create(JFrame frame, MainWindow main){
+    public static JMenuBar Create(IMainWindow main){
         JMenuBar menubar = new JMenuBar();
         JMenu OptionMenu = new JMenu("Option");
         menubar.add(OptionMenu);
@@ -22,7 +22,7 @@ public class CreateMenubar {
              */
             @Override
             public void actionPerformed(ActionEvent event) {
-                TargetSetiingDialog dialog = new TargetSetiingDialog(frame, main);
+                TargetSetiingDialog dialog = new TargetSetiingDialog(main);
                 dialog.Show();
             }
         });
