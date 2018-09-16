@@ -228,7 +228,8 @@ public class MainWindow implements IMainWindow{
         // 合計を算出し、テーブルを更新する
         tableModelManager.UpdateTotal(this.dataRecord);
 
-        layout.setConstraints(table, gbc);
+        JScrollPane pane = new JScrollPane(table);
+        layout.setConstraints(pane, gbc);
 
         panel.setLayout(layout);
         panel.add(label1);
@@ -238,7 +239,7 @@ public class MainWindow implements IMainWindow{
         panel.add(label3);
         panel.add(comboDay);
         panel.add(addButton);
-        panel.add(table);
+        panel.add(pane);
 
         contentPane.add(panel);
 
