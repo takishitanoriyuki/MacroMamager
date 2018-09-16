@@ -5,15 +5,15 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import model.*;
-import window.MainWindow;
+import window.*;
 
 public class TargetSetiingDialog {
     JDialog Dialog;
     /**
      * コンストラクタ
      */
-    public TargetSetiingDialog(JFrame frame, MainWindow mainWindow){
-        targetSetiingDialog(frame, mainWindow);
+    public TargetSetiingDialog(IMainWindow mainWindow){
+        targetSetiingDialog(mainWindow);
     }
     
     /**
@@ -26,10 +26,10 @@ public class TargetSetiingDialog {
     /**
      * ダイアログ画面を作成する
      */
-    private void targetSetiingDialog(JFrame frame,MainWindow mainWindow){
+    private void targetSetiingDialog(IMainWindow mainWindow){
         IBasicData basicData = BasicData.getInstanse();
 
-        Dialog = new JDialog(frame, true);
+        Dialog = new JDialog(mainWindow.getFrame(), true);
         Dialog.setSize(320, 240);
         Dialog.setLocationRelativeTo(null);
 
