@@ -19,21 +19,21 @@ public class GetValueFromTextField {
             return null;
         }
         try{
-            inputCarbohydrateValue = Float.parseFloat(protein.getText());
+            inputCarbohydrateValue = Float.parseFloat(carbohydrate.getText());
         } catch(NumberFormatException e){
             JOptionPane joption = new JOptionPane();
             joption.showMessageDialog(dialog, "Please input carbohydrate by numbers.");
             return null;
         }
         try{
-            inputLipidValue = Float.parseFloat(protein.getText());
+            inputLipidValue = Float.parseFloat(lipid.getText());
         }catch(NumberFormatException e){
             JOptionPane joption = new JOptionPane();
             joption.showMessageDialog(dialog, "Please input lipid by numbers.");
             return null;
         }
         try{
-            inputCalorieValue = Float.parseFloat(protein.getText());
+            inputCalorieValue = Float.parseFloat(calorie.getText());
         }catch(NumberFormatException e){
             JOptionPane joption = new JOptionPane();
             joption.showMessageDialog(dialog, "Please input calorie by numbers.");
