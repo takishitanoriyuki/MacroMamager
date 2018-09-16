@@ -17,14 +17,12 @@ public class TableModelManager implements ITableModelManager {
         // カラムのタイトル
         String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
 
-        this.tableModel = new DefaultTableModel(columnNames, 0){
-
-            // セルを編集できないようにする
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        this.tableModel = new DefaultTableModel();
+        this.tableModel.addColumn("Item");
+        this.tableModel.addColumn("Protein");
+        this.tableModel.addColumn("Carbohydrate");
+        this.tableModel.addColumn("Lipid");
+        this.tableModel.addColumn("Calorie");
 
     }
 
@@ -86,7 +84,6 @@ public class TableModelManager implements ITableModelManager {
 
     public void RemoveRow(int index){
         this.tableModel.removeRow(index);
-
     }
 
 }
