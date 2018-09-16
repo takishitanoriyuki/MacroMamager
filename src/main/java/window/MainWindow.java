@@ -22,10 +22,9 @@ public class MainWindow implements IMainWindow{
     private List<DataRecord> dataRecord = new ArrayList<DataRecord>();
     private JFrame frame;
     private JTable table;
-    // テーブルモデル
-    private DefaultTableModel tableModel;
     // データにアクセスするオブジェクト
     private DataAccess dataAccess;
+    private ITableModelManager tableModelManager = TableModelManager.getInstance();
 
     /**
      * JFrameを返す
@@ -39,13 +38,6 @@ public class MainWindow implements IMainWindow{
      */
     public JTable getTable(){
         return this.table;
-    }
-
-    /**
-     * TableModelを返す
-     */
-    public DefaultTableModel getTableModel(){
-        return this.tableModel;
     }
 
     // コンストラクタ
@@ -64,10 +56,10 @@ public class MainWindow implements IMainWindow{
         this.dataRecord.add(inputDataRecord);
 
         // テーブルにデータを追加する
-        setTableFromRecord(inputDataRecord);
+        this.tableModelManager.InsertTableFromRecord(inputDataRecord);
 
         // 合計を算出し、テーブルを更新する
-        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
+        tableModelManager.UpdateTotal(this.dataRecord);
 
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -86,50 +78,41 @@ public class MainWindow implements IMainWindow{
         record.Calorie = editDataRecord.Calorie;
 
         // テーブルを更新する
-        this.tableModel.setValueAt(record.ItemName, index + 1, 0);
-        this.tableModel.setValueAt(String.format("%.2f", record.Protein), index + 1, 1);
-        this.tableModel.setValueAt(String.format("%.2f", record.Carbohydrate), index + 1, 2);
-        this.tableModel.setValueAt(String.format("%.2f", record.Lipid), index + 1, 3);
-        this.tableModel.setValueAt(String.format("%.2f", record.Calorie), index + 1, 4);
+        this.tableModelManager.UpdateRow(index, record);
 
         // 合計を算出し、テーブルを更新する
-        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
+        tableModelManager.UpdateTotal(this.dataRecord);
         
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
     }
 
+    public void RemoveRecord(int index){
+        this.tableModelManager.DeleteRow(index);
+        this.dataRecord.remove(index - 1);
+        this.tableModelManager.UpdateTotal(dataRecord);
+        this.dataAccess.OutputFile(this.dataRecord);
+    }
+
     public void UpdateBasicData(){
         // 合計を算出し、テーブルを更新する
-        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
+        tableModelManager.UpdateTotal(this.dataRecord);
     }
 
     /**
      * データ初期化
      */
     private void initializeTable(){
-        // カラムのタイトル
-        String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
-
-        // テーブルモデルの初期化
-        this.tableModel = new DefaultTableModel(columnNames, 0){
-
-            // セルを編集できないようにする
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }};
-
         // 合計の行を追加する
         DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
-        setTableFromRecord(columnCalc);
+        this.tableModelManager.InsertTableFromRecord(columnCalc);
     }
 
     /**
      * Window作成
      */
     private void createWindow(){
-        frame = new JFrame();
+        this.frame = new JFrame();
         this.frame.setSize(800, 480);
         this.frame.setLocationRelativeTo(null);
         this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -152,7 +135,7 @@ public class MainWindow implements IMainWindow{
         // ファイルを開く
         this.dataAccess = new DataAccess(year, month, day);
         this.dataRecord = this.dataAccess.OpenFile();
-        createTableFromRecords(this.dataRecord);
+        this.tableModelManager.CreateTableFromRecords(this.dataRecord);
 
         // Yearラベル
         JPanel panel = new JPanel();
@@ -213,7 +196,7 @@ public class MainWindow implements IMainWindow{
                 int day = DateComboBox.GetValueFromComboBox(comboDay);
                 dataAccess = new DataAccess(year, month, day);
                 dataRecord = dataAccess.OpenFile();
-                createTableFromRecords(dataRecord);
+                tableModelManager.CreateTableFromRecords(dataRecord);
             }
         };
         comboYear.addActionListener(eventListner);
@@ -238,12 +221,12 @@ public class MainWindow implements IMainWindow{
         gbc.weightx = 1;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-        this.table = new JTable(this.tableModel);
+        this.table = this.tableModelManager.GetTable();
         TableClickAdapter tableClickAdapter = new TableClickAdapter(this, this.dataRecord);
         this.table.addMouseListener(tableClickAdapter);
 
         // 合計を算出し、テーブルを更新する
-        TableAccess.UpdateTable(this.dataRecord, this.tableModel);
+        tableModelManager.UpdateTotal(this.dataRecord);
 
         layout.setConstraints(table, gbc);
 
@@ -260,33 +243,5 @@ public class MainWindow implements IMainWindow{
         contentPane.add(panel);
 
         this.frame.setVisible(true);
-    }
-
-    /**
-     * レコードリストからテーブルを作成する
-     * @param records
-     */
-    private void createTableFromRecords(List<DataRecord> records){
-        if(this.tableModel.getRowCount() > 1){
-            while(this.tableModel.getRowCount() > 1)
-            this.tableModel.removeRow(1);            
-        }
-        for (DataRecord record : records) {
-            setTableFromRecord(record);
-        }
-    }
-
-    /**
-     * レコードからテーブルに設定する
-     * @param record
-     */
-    private void setTableFromRecord(DataRecord record){
-        Object[] row = new Object[5];
-        row[0] = record.ItemName;
-        row[1] = String.format("%.2f", record.Protein);
-        row[2] = String.format("%.2f", record.Carbohydrate);
-        row[3] = String.format("%.2f", record.Lipid);
-        row[4] = String.format("%.2f", record.Calorie);
-        this.tableModel.insertRow(this.tableModel.getRowCount(), row);
     }
 }
