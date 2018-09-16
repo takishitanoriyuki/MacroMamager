@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MainWindowTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2018-09-16T01:36:12" hostname="HP-Linux" time="0.358">
+<testsuite name="MainWindowTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2018-09-16T06:35:59" hostname="HP-Linux" time="0.467">
   <properties/>
-  <testcase name="testMainWindow" classname="MainWindowTest" time="0.358">
-    <failure message="java.lang.AssertionError: 行数が誤ってます expected:&lt;4&gt; but was:&lt;2&gt;" type="java.lang.AssertionError">java.lang.AssertionError: 行数が誤ってます expected:&lt;4&gt; but was:&lt;2&gt;
+  <testcase name="testMainWindow" classname="MainWindowTest" time="0.467">
+    <failure message="java.lang.AssertionError: 行数が誤ってます expected:&lt;5&gt; but was:&lt;2&gt;" type="java.lang.AssertionError">java.lang.AssertionError: 行数が誤ってます expected:&lt;5&gt; but was:&lt;2&gt;
 	at org.junit.Assert.fail(Assert.java:88)
 	at org.junit.Assert.failNotEquals(Assert.java:834)
 	at org.junit.Assert.assertEquals(Assert.java:645)
