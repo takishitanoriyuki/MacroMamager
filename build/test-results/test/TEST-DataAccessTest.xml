@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="DataAccessTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-09-17T00:50:17" hostname="HP-Linux" time="0.012">
+  <properties/>
+  <testcase name="testDataAccessNotExists" classname="DataAccessTest" time="0.001"/>
+  <testcase name="testDataAccessSaveLoad" classname="DataAccessTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
