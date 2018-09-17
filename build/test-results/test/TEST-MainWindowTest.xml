@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MainWindowTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-09-17T00:50:16" hostname="HP-Linux" time="1.284">
+<testsuite name="MainWindowTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-09-17T01:45:55" hostname="HP-Linux" time="1.165">
   <properties/>
-  <testcase name="testMainWindowEditRecord" classname="MainWindowTest" time="0.642"/>
-  <testcase name="testMainWindowUpdateBasicData" classname="MainWindowTest" time="0.194"/>
-  <testcase name="testMainWindowRemoveRecord" classname="MainWindowTest" time="0.23"/>
-  <testcase name="testMainWindowSetRecord" classname="MainWindowTest" time="0.215"/>
+  <testcase name="testMainWindowEditRecord" classname="MainWindowTest" time="0.418"/>
+  <testcase name="testMainWindowUpdateBasicData" classname="MainWindowTest" time="0.192"/>
+  <testcase name="testMainWindowRemoveRecord" classname="MainWindowTest" time="0.286"/>
+  <testcase name="testMainWindowSetRecord" classname="MainWindowTest" time="0.268"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

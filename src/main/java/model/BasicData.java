@@ -30,6 +30,10 @@ public class BasicData implements IBasicData {
 
     private static IBasicData basicData = new BasicData();
 
+    /**
+     * インスタンス取得
+     * @return
+     */
     public static IBasicData getInstanse(){
         return basicData;
     }
@@ -102,6 +106,9 @@ public class BasicData implements IBasicData {
         return true;        
     }
 
+    /**
+     * ファイルを正常に開けたか？
+     */
     public boolean isExist(){
         return this.exist;
     }

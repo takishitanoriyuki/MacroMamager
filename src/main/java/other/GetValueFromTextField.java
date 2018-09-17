@@ -5,6 +5,15 @@ import javax.swing.*;
 import model.DataRecord;
 
 public class GetValueFromTextField {
+    /**
+     * テキストフィールドから入力データ値を取り出す
+     * @param dialog
+     * @param protein
+     * @param carbohydrate
+     * @param lipid
+     * @param calorie
+     * @return
+     */
     public static DataRecord GetValue(JDialog dialog, JTextField protein, JTextField carbohydrate, JTextField lipid, JTextField calorie){
         float inputProteinValue;
         float inputCarbohydrateValue;
