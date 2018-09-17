@@ -40,6 +40,13 @@ public class MainWindow implements IMainWindow{
         return this.table;
     }
 
+    /**
+     * データリストを返す
+     */
+    public List<DataRecord> getDataRecords(){
+        return this.dataRecord;
+    }
+
     // コンストラクタ
     public MainWindow(){
         // データ初期化

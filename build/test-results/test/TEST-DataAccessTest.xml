@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DataAccessTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-09-17T01:45:56" hostname="HP-Linux" time="0.017">
+<testsuite name="DataAccessTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2018-09-17T12:35:20" hostname="HP-Linux" time="0.026">
   <properties/>
-  <testcase name="testDataAccessNotExists" classname="DataAccessTest" time="0.002"/>
-  <testcase name="testDataAccessSaveLoad" classname="DataAccessTest" time="0.01"/>
+  <testcase name="testDataAccessNotExists" classname="DataAccessTest" time="0.012"/>
+  <testcase name="testDataAccessSaveLoad" classname="DataAccessTest" time="0.014"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
