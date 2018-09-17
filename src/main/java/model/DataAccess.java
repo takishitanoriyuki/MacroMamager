@@ -64,6 +64,10 @@ public class DataAccess{
         return true;
     }
 
+    /**
+     * ファイルを開いてデータを取り出す
+     * @return
+     */
     public List<DataRecord> OpenFile() {
         List<DataRecord> records = new ArrayList<DataRecord>();
         try {

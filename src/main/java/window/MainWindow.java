@@ -40,6 +40,13 @@ public class MainWindow implements IMainWindow{
         return this.table;
     }
 
+    /**
+     * データリストを返す
+     */
+    public List<DataRecord> getDataRecords(){
+        return this.dataRecord;
+    }
+
     // コンストラクタ
     public MainWindow(){
         // データ初期化
@@ -87,6 +94,9 @@ public class MainWindow implements IMainWindow{
         this.dataAccess.OutputFile(this.dataRecord);
     }
 
+    /**
+     * テーブルから行を削除する
+     */
     public void RemoveRecord(int index){
         this.tableModelManager.DeleteRow(index);
         this.dataRecord.remove(index - 1);
@@ -94,6 +104,10 @@ public class MainWindow implements IMainWindow{
         this.dataAccess.OutputFile(this.dataRecord);
     }
 
+    /**
+     * 基本データを更新したときにコールする
+     * 合計行を更新する
+     */
     public void UpdateBasicData(){
         // 合計を算出し、テーブルを更新する
         tableModelManager.UpdateTotal(this.dataRecord);

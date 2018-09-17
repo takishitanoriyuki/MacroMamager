@@ -8,16 +8,29 @@ import window.*;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.Random;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 public class MainWindowTest {
     Random random = new Random(8);
 
-    @Test public void testMainWindow() {
+    private void deleteFile(){
+        // 前準備
+        String currentDirName = new File(".").getAbsoluteFile().getParent();
+        File dataDir = new File(currentDirName + "/data");
+        if(dataDir.exists() == true){
+            File files[] = dataDir.listFiles();
+            for (File file : files) {
+                file.delete();
+            }
+        }
+    }
+
+    @Test public void testMainWindowSetRecord() {
+        deleteFile();
+
         // テスト対象
         MainWindow mainWindow = new MainWindow();
 
@@ -34,6 +47,75 @@ public class MainWindowTest {
         JTable table = mainWindow.getTable();
         // 行数
         assertEquals("行数が誤ってます", table.getRowCount(), 2);
+        // テーブルの値
+        assertEquals("(1,1)値が誤ってます", table.getValueAt(1, 1), String.format("%.2f", record.Protein));
+        assertEquals("(1,2)値が誤ってます", table.getValueAt(1, 2), String.format("%.2f", record.Carbohydrate));
+        assertEquals("(1,3)値が誤ってます", table.getValueAt(1, 3), String.format("%.2f", record.Lipid));
+        assertEquals("(1,4)値が誤ってます", table.getValueAt(1, 4), String.format("%.2f", record.Calorie));
+    }
 
+    @Test public void testMainWindowEditRecord() {
+        deleteFile();
+
+        // テスト対象
+        MainWindow mainWindow = new MainWindow();
+
+        // テストデータ
+        DataRecord temp = new DataRecord();
+        mainWindow.SetRecord(temp);
+
+        DataRecord record = new DataRecord();
+        record.ItemName = "TestItem";
+        record.Protein = this.random.nextDouble();
+        record.Carbohydrate = this.random.nextDouble();
+        record.Lipid = this.random.nextDouble();
+        record.Calorie = this.random.nextDouble();
+        mainWindow.EditRecord(0, record);
+
+        // テスト結果
+        JTable table = mainWindow.getTable();
+        // 行数
+        assertEquals("行数が誤ってます", table.getRowCount(), 2);
+        // テーブルの値
+        assertEquals("(1,1)値が誤ってます", table.getValueAt(1, 1), String.format("%.2f", record.Protein));
+        assertEquals("(1,2)値が誤ってます", table.getValueAt(1, 2), String.format("%.2f", record.Carbohydrate));
+        assertEquals("(1,3)値が誤ってます", table.getValueAt(1, 3), String.format("%.2f", record.Lipid));
+        assertEquals("(1,4)値が誤ってます", table.getValueAt(1, 4), String.format("%.2f", record.Calorie));
+    }
+
+    @Test public void testMainWindowRemoveRecord() {
+        deleteFile();
+
+        // テスト対象
+        MainWindow mainWindow = new MainWindow();
+
+        // テストデータ
+        DataRecord temp = new DataRecord();
+        mainWindow.SetRecord(temp);
+
+        mainWindow.RemoveRecord(1);
+
+        // テスト結果
+        JTable table = mainWindow.getTable();
+        // 行数
+        assertEquals("行数が誤ってます", table.getRowCount(), 1);
+    }
+
+    @Test public void testMainWindowUpdateBasicData() {
+        deleteFile();
+
+        // テスト対象
+        MainWindow mainWindow = new MainWindow();
+
+        // テストデータ
+        DataRecord temp = new DataRecord();
+        mainWindow.SetRecord(temp);
+
+        mainWindow.RemoveRecord(1);
+
+        // テスト結果
+        JTable table = mainWindow.getTable();
+        // 行数
+        assertEquals("行数が誤ってます", table.getRowCount(), 1);
     }
 }
