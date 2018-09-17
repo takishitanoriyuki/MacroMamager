@@ -15,8 +15,6 @@ public class TableModelManager implements ITableModelManager {
      */
     private TableModelManager(){
         // カラムのタイトル
-        String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
-
         this.tableModel = new DefaultTableModel();
         this.tableModel.addColumn("Item");
         this.tableModel.addColumn("Protein");

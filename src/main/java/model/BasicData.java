@@ -60,7 +60,9 @@ public class BasicData implements IBasicData {
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(this.DataFile)));
                 pw.println(this.Protein + "," + this.Carbohydrate + "," + this.Lipid + "," + this.Calorie);
                 pw.close();
+                this.exist = true;
             } catch (IOException e) {
+                this.exist = false;
             }
         }else{
             // ファイルを開く
