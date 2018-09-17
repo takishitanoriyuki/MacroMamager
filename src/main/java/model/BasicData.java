@@ -30,6 +30,10 @@ public class BasicData implements IBasicData {
 
     private static IBasicData basicData = new BasicData();
 
+    /**
+     * インスタンス取得
+     * @return
+     */
     public static IBasicData getInstanse(){
         return basicData;
     }
@@ -60,7 +64,9 @@ public class BasicData implements IBasicData {
                 PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(this.DataFile)));
                 pw.println(this.Protein + "," + this.Carbohydrate + "," + this.Lipid + "," + this.Calorie);
                 pw.close();
+                this.exist = true;
             } catch (IOException e) {
+                this.exist = false;
             }
         }else{
             // ファイルを開く
@@ -100,6 +106,9 @@ public class BasicData implements IBasicData {
         return true;        
     }
 
+    /**
+     * ファイルを正常に開けたか？
+     */
     public boolean isExist(){
         return this.exist;
     }
