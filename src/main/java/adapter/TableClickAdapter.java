@@ -1,12 +1,13 @@
 package adapter;
 
 import java.util.List;
+import java.awt.datatransfer.Clipboard;
 import java.awt.event.*;
 
 import javax.swing.*;
 
 import dialog.EditDialog;
-import model.DataRecord;
+import model.*;
 import window.*;
 import window.parts.*;
 
@@ -17,6 +18,7 @@ public class TableClickAdapter extends MouseAdapter {
     private final String DELETE = "Delete";
     private final String EDITITEM = "EditItem";
     private final String COPY = "Copy";
+    private final String PASTE = "Paste";
 
     public TableClickAdapter(IMainWindow main, List<DataRecord> list){
         this.mainWindow = main;
@@ -63,22 +65,34 @@ public class TableClickAdapter extends MouseAdapter {
             
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // 削除メニュークリック時の処理
+                    // 複製メニュークリック時の処理
                     if(e.getActionCommand() == COPY){
                         int index = mainWindow.getTable().getSelectedRow() - 1;
                         DataRecord record = dataRecord.get(index);
-                        DataRecord copiedRecord = new DataRecord();
-                        copiedRecord.ItemName = record.ItemName;
-                        copiedRecord.Protein = record.Protein;
-                        copiedRecord.Carbohydrate = record.Carbohydrate;
-                        copiedRecord.Lipid = record.Lipid;
-                        copiedRecord.Calorie = record.Calorie;
-                        mainWindow.SetRecord(copiedRecord);
+                        IClipBoard clip = ClipBoard.getInstanse();
+                        clip.Store(record);
                     }
                 }
             });
             popupMenu.add(menuItemCopy);
 
+            // 貼付けメニューの実装
+            JMenuItem menuItemPaste = new JMenuItem("PASTE");
+            menuItemPaste.setActionCommand(PASTE);
+            menuItemPaste.addActionListener(new ActionListener(){
+            
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // 貼付けメニュークリック時の処理
+                    if(e.getActionCommand() == PASTE){
+                        IClipBoard clip = ClipBoard.getInstanse();
+                        DataRecord record = clip.Pull();
+                        mainWindow.SetRecord(record);
+                    }
+                }
+            });
+            popupMenu.add(menuItemPaste);
+            
             // 削除メニューの実装
             JMenuItem menuItemDelele = new JMenuItem("DELETE");
             menuItemDelele.setActionCommand(DELETE);
