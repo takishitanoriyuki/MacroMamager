@@ -7,6 +7,11 @@ import javax.swing.table.DefaultTableModel;
 import model.*;
 
 public class TableAccess {
+    /**
+     * リストデータから合計を計算し、テーブルを更新する
+     * @param dataRecord
+     * @param tableModel
+     */
     public static void UpdateTable(List<DataRecord> dataRecord, DefaultTableModel tableModel){
         DataRecord columnCalc = new DataRecord("Total", 0.00, 0.00, 0.00, 0.00);
         // リストの全データの合計を求める

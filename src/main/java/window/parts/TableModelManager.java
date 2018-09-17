@@ -15,8 +15,6 @@ public class TableModelManager implements ITableModelManager {
      */
     private TableModelManager(){
         // カラムのタイトル
-        String[] columnNames = {"Item", "Protein", "Carbohydrate", "Lipid", "Calorie"};
-
         this.tableModel = new DefaultTableModel();
         this.tableModel.addColumn("Item");
         this.tableModel.addColumn("Protein");
@@ -26,10 +24,17 @@ public class TableModelManager implements ITableModelManager {
 
     }
 
+    /**
+     * インスタンス取得
+     * @return
+     */
     public static ITableModelManager getInstance(){
         return tableModelManager;
     }
 
+    /**
+     * テーブルを更新する
+     */
     public void UpdateRow(int index, DataRecord record){
         // テーブルを更新する
         this.tableModel.setValueAt(record.ItemName, index + 1, 0);
@@ -39,17 +44,25 @@ public class TableModelManager implements ITableModelManager {
         this.tableModel.setValueAt(String.format("%.2f", record.Calorie), index + 1, 4);
     }
 
+    /**
+     * テーブルから行を削除する
+     */
     public void DeleteRow(int index){
-        // テーブルを更新する
         this.tableModel.removeRow(index);
     }
 
+    /**
+     * テーブルモデルからJTableオブジェクトを作成し返す
+     */
     public JTable GetTable(){
         JTable table = new JTable(this.tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         return table;
     }
 
+    /**
+     * 合計値を計算し、テーブルを更新する
+     */
     public void UpdateTotal(List<DataRecord> record){
         TableAccess.UpdateTable(record, this.tableModel);
     }
@@ -81,9 +94,4 @@ public class TableModelManager implements ITableModelManager {
         row[4] = String.format("%.2f", record.Calorie);
         this.tableModel.insertRow(this.tableModel.getRowCount(), row);
     }
-
-    public void RemoveRow(int index){
-        this.tableModel.removeRow(index);
-    }
-
 }

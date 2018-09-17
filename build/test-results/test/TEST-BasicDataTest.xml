@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BasicDataTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2018-09-17T01:45:56" hostname="HP-Linux" time="0.015">
+  <properties/>
+  <testcase name="testBasicDataSaveLoad" classname="BasicDataTest" time="0.011"/>
+  <testcase name="testBasicDataNotDirExists" classname="BasicDataTest" time="0.002"/>
+  <testcase name="testBasicDataDirExists" classname="BasicDataTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

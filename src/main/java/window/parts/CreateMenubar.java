@@ -9,6 +9,11 @@ import dialog.TargetSetiingDialog;
 import window.*;
 
 public class CreateMenubar {
+    /**
+     * メニューバーを作成する
+     * @param main
+     * @return
+     */
     public static JMenuBar Create(IMainWindow main){
         JMenuBar menubar = new JMenuBar();
         JMenu OptionMenu = new JMenu("Option");
