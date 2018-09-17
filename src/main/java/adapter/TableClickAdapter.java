@@ -25,6 +25,7 @@ public class TableClickAdapter extends MouseAdapter {
         this.dataRecord = list;
     }
 
+    @Override
     public void mouseClicked(MouseEvent event){
         // テーブルを右クリックしたときの処理
         if(event.getButton() == MouseEvent.BUTTON3){
@@ -47,7 +48,7 @@ public class TableClickAdapter extends MouseAdapter {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // 削除メニュークリック時の処理
+                    // 編集メニュークリック時の処理
                     if(e.getActionCommand() == EDITITEM){
                         int index = mainWindow.getTable().getSelectedRow() - 1;
                         DataRecord record = dataRecord.get(index);

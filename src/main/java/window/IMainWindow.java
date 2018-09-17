@@ -1,5 +1,7 @@
 package window;
 
+import java.util.List;
+
 import javax.swing.*;
 
 import model.*;
@@ -14,6 +16,11 @@ public interface IMainWindow {
      * JTableを返す
      */
     JTable getTable();
+
+    /**
+     * データリストを返す
+     */
+    List<DataRecord> getDataRecords();
 
     /**
      * 基本データを更新したときにコールする
