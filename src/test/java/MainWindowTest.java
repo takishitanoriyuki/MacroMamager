@@ -46,9 +46,6 @@ public class MainWindowTest {
         // テスト結果
         JTable table = mainWindow.getTable();
         // 行数
-<<<<<<< HEAD
-        // assertEquals("行数が誤ってます", table.getRowCount(), 2);
-=======
         assertEquals("行数が誤ってます", table.getRowCount(), 2);
         // テーブルの値
         assertEquals("(1,1)値が誤ってます", table.getValueAt(1, 1), String.format("%.2f", record.Protein));
@@ -85,7 +82,6 @@ public class MainWindowTest {
         assertEquals("(1,3)値が誤ってます", table.getValueAt(1, 3), String.format("%.2f", record.Lipid));
         assertEquals("(1,4)値が誤ってます", table.getValueAt(1, 4), String.format("%.2f", record.Calorie));
     }
->>>>>>> Develop
 
     @Test public void testMainWindowRemoveRecord() {
         deleteFile();
