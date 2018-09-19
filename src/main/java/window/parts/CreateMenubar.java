@@ -46,7 +46,7 @@ public class CreateMenubar {
         
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(main.getTable().getSelectedRowCount() == 1){
+                if(main.getTable().getSelectedRowCount() == 1 && main.getTable().getSelectedRow() > 0){
                     // 編集メニュークリック時の処理
                     if(e.getActionCommand() == EDITITEM){
                         int index = main.getTable().getSelectedRow() - 1;
@@ -65,7 +65,7 @@ public class CreateMenubar {
         
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(main.getTable().getSelectedRowCount() == 1){
+                if(main.getTable().getSelectedRowCount() == 1 && main.getTable().getSelectedRow() > 0){
                     // 複製メニュークリック時の処理
                     if(e.getActionCommand() == COPY){
                         int index = main.getTable().getSelectedRow() - 1;
@@ -84,7 +84,7 @@ public class CreateMenubar {
         
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(main.getTable().getSelectedRowCount() == 1){
+                if(main.getTable().getSelectedRowCount() == 1 && main.getTable().getSelectedRow() > 0){
                     // 貼付けメニュークリック時の処理
                     if(e.getActionCommand() == PASTE){
                         IClipBoard clip = ClipBoard.getInstanse();
@@ -102,7 +102,7 @@ public class CreateMenubar {
         
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(main.getTable().getSelectedRowCount() == 1){
+                if(main.getTable().getSelectedRowCount() == 1 && main.getTable().getSelectedRow() > 0){
                     // 削除メニュークリック時の処理
                     if(e.getActionCommand() == DELETE){
                         int index = main.getTable().getSelectedRow();
