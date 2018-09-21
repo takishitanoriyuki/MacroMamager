@@ -223,10 +223,50 @@ public class MainWindow implements IMainWindow{
         gbc.gridwidth = 6;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        JPanel panel2 = new JPanel();
+        layout.setConstraints(panel2, gbc);
+
+        GridBagLayout layout2 = new GridBagLayout();
+        GridBagConstraints gbc2 = new GridBagConstraints();
+        gbc2.gridx = 0;
+        gbc2.gridy = 0;
+        gbc2.weightx = 0.2;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton addButton = new JButton("ADD");
         AddButtonClickAdapter addButtonClickAdapter = new AddButtonClickAdapter(this);
+        layout2.setConstraints(addButton, gbc2);
+
+        gbc2.gridx = 1;
+        gbc2.gridy = 0;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        JButton editButton = new JButton("EDIT");
+        layout2.setConstraints(editButton, gbc2);
+ 
+        gbc2.gridx = 2;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        JButton copyButton = new JButton("COPY");
+        layout2.setConstraints(copyButton, gbc2);
+
+        gbc2.gridx = 3;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        JButton pasteButton = new JButton("PASTE");
+        layout2.setConstraints(pasteButton, gbc2);
+
+        gbc2.gridx = 4;
+        gbc2.fill = GridBagConstraints.HORIZONTAL;
+        JButton deleteButton = new JButton("DELETE");
+        layout2.setConstraints(deleteButton, gbc2);
+
         addButton.addMouseListener(addButtonClickAdapter);
-        layout.setConstraints(addButton, gbc);
+        editButton.addMouseListener(addButtonClickAdapter);
+        copyButton.addMouseListener(addButtonClickAdapter);
+        pasteButton.addMouseListener(addButtonClickAdapter);
+        deleteButton.addMouseListener(addButtonClickAdapter);
+        panel2.add(addButton);
+        panel2.add(editButton);
+        panel2.add(copyButton);
+        panel2.add(pasteButton);
+        panel2.add(deleteButton);
 
         // テーブルの実装
         gbc.gridx = 0;
@@ -252,7 +292,8 @@ public class MainWindow implements IMainWindow{
         panel.add(comboMonth);
         panel.add(label3);
         panel.add(comboDay);
-        panel.add(addButton);
+        //panel.add(addButton);
+        panel.add(panel2);
         panel.add(pane);
 
         contentPane.add(panel);
