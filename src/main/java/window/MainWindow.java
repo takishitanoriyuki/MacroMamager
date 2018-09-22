@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 
 import adapter.*;
 import model.*;
@@ -233,35 +232,34 @@ public class MainWindow implements IMainWindow{
         gbc2.weightx = 0.2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton addButton = new JButton("ADD");
-        AddButtonClickAdapter addButtonClickAdapter = new AddButtonClickAdapter(this);
         layout2.setConstraints(addButton, gbc2);
+        addButton.addMouseListener(new AddButtonClickAdapter(this));
 
         gbc2.gridx = 1;
         gbc2.gridy = 0;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton editButton = new JButton("EDIT");
         layout2.setConstraints(editButton, gbc2);
+        editButton.addMouseListener(new EditButtonClickAdapter(this));
  
         gbc2.gridx = 2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton copyButton = new JButton("COPY");
         layout2.setConstraints(copyButton, gbc2);
+        copyButton.addMouseListener(new CopyButtonClickAdapter(this));
 
         gbc2.gridx = 3;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton pasteButton = new JButton("PASTE");
         layout2.setConstraints(pasteButton, gbc2);
+        pasteButton.addMouseListener(new PasteButtonClickAdapter(this));
 
         gbc2.gridx = 4;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton deleteButton = new JButton("DELETE");
         layout2.setConstraints(deleteButton, gbc2);
+        deleteButton.addMouseListener(new DeleteButtonClickAdapter(this));
 
-        addButton.addMouseListener(addButtonClickAdapter);
-        editButton.addMouseListener(addButtonClickAdapter);
-        copyButton.addMouseListener(addButtonClickAdapter);
-        pasteButton.addMouseListener(addButtonClickAdapter);
-        deleteButton.addMouseListener(addButtonClickAdapter);
         panel2.add(addButton);
         panel2.add(editButton);
         panel2.add(copyButton);
