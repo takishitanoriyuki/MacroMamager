@@ -5,6 +5,7 @@ import java.awt.event.*;
 import dialog.*;
 import model.*;
 import window.*;
+import window.parts.ButtonControl;
 
 public class PasteButtonClickAdapter extends MouseAdapter {
     private IMainWindow mainWindow;
@@ -24,5 +25,8 @@ public class PasteButtonClickAdapter extends MouseAdapter {
         IClipBoard clip = ClipBoard.getInstanse();
         DataRecord record = clip.Pull();
         this.mainWindow.SetRecord(record);
+        ButtonControl.getCopyButtonInstanse().setEnabled(false);
+        ButtonControl.getEditButtonInstanse().setEnabled(false);
+        ButtonControl.getDeleteButtonInstanse().setEnabled(false);
     }
 }

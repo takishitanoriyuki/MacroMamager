@@ -62,10 +62,10 @@ public class MainWindow implements IMainWindow{
         this.dataRecord.add(inputDataRecord);
 
         // テーブルにデータを追加する
-        this.tableModelManager.InsertTableFromRecord(inputDataRecord);
+        //this.tableModelManager.InsertTableFromRecord(inputDataRecord);
 
         // 合計を算出し、テーブルを更新する
-        tableModelManager.UpdateTotal(this.dataRecord);
+        tableModelManager.CreateTableFromRecords(this.dataRecord);
 
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -84,10 +84,10 @@ public class MainWindow implements IMainWindow{
         record.Calorie = editDataRecord.Calorie;
 
         // テーブルを更新する
-        this.tableModelManager.UpdateRow(index, record);
+        //this.tableModelManager.UpdateRow(index, record);
 
         // 合計を算出し、テーブルを更新する
-        tableModelManager.UpdateTotal(this.dataRecord);
+        tableModelManager.CreateTableFromRecords(this.dataRecord);
         
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -231,34 +231,38 @@ public class MainWindow implements IMainWindow{
         gbc2.gridy = 0;
         gbc2.weightx = 0.2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton addButton = new JButton("ADD");
-        layout2.setConstraints(addButton, gbc2);
+        JButton addButton = ButtonControl.getAddButtonInstanse();
         addButton.addMouseListener(new AddButtonClickAdapter(this));
+        layout2.setConstraints(addButton, gbc2);
 
         gbc2.gridx = 1;
         gbc2.gridy = 0;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton editButton = new JButton("EDIT");
-        layout2.setConstraints(editButton, gbc2);
+        JButton editButton = ButtonControl.getEditButtonInstanse();
         editButton.addMouseListener(new EditButtonClickAdapter(this));
+        layout2.setConstraints(editButton, gbc2);
+        editButton.setEnabled(false);
  
         gbc2.gridx = 2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton copyButton = new JButton("COPY");
-        layout2.setConstraints(copyButton, gbc2);
+        JButton copyButton = ButtonControl.getCopyButtonInstanse();
         copyButton.addMouseListener(new CopyButtonClickAdapter(this));
+        layout2.setConstraints(copyButton, gbc2);
+        copyButton.setEnabled(false);
 
         gbc2.gridx = 3;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton pasteButton = new JButton("PASTE");
-        layout2.setConstraints(pasteButton, gbc2);
+        JButton pasteButton = ButtonControl.getPasteButtonInstanse();
         pasteButton.addMouseListener(new PasteButtonClickAdapter(this));
+        layout2.setConstraints(pasteButton, gbc2);
+        pasteButton.setEnabled(false);
 
         gbc2.gridx = 4;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton deleteButton = new JButton("DELETE");
-        layout2.setConstraints(deleteButton, gbc2);
+        JButton deleteButton = ButtonControl.getPasteButtonInstanse();
         deleteButton.addMouseListener(new DeleteButtonClickAdapter(this));
+        layout2.setConstraints(deleteButton, gbc2);
+        deleteButton.setEnabled(false);
 
         panel2.add(addButton);
         panel2.add(editButton);
