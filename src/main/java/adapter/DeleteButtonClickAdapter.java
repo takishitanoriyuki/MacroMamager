@@ -3,25 +3,25 @@ package adapter;
 import java.awt.event.*;
 
 import dialog.*;
+import model.*;
 import window.*;
 
-public class AddButtonClickAdapter extends MouseAdapter {
+public class DeleteButtonClickAdapter extends MouseAdapter {
     private IMainWindow mainWindow;
 
     /**
      * コンストラクタ
      */
-    public AddButtonClickAdapter(IMainWindow main){
+    public DeleteButtonClickAdapter(IMainWindow main){
         super();
         this.mainWindow = main;
     }
 
     /**
-     * ボタンクリック時の処理
+     * ボタンクリック処理
      */
     public void mouseClicked(MouseEvent event){
-        InputDialog dialog = new InputDialog(this.mainWindow);
-        dialog.Show();
+        int index = this.mainWindow.getTable().getSelectedRow();
+        this.mainWindow.RemoveRecord(index);
     }
-
 }
