@@ -2,7 +2,6 @@ package adapter;
 
 import java.awt.event.*;
 
-import dialog.*;
 import model.*;
 import window.*;
 import window.parts.ButtonControl;
