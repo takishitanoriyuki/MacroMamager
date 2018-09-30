@@ -1,3 +1,8 @@
 data/*
 *.class
 
+.gradle/4.10.2/*
+.gradle/buildOutputCleanup/*
+
+.settings/*
+.gradle/vcs-1/gc.properties
