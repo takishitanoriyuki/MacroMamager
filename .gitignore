@@ -6,3 +6,6 @@ data/*
 
 .settings/*
 .gradle/vcs-1/gc.properties
+.idea/.name
+.gradle/buildOutputCleanup/cache.*
+

@@ -2,10 +2,12 @@ package dialog;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 import javax.swing.*;
 
-import model.DataRecord;
+import dialog.parts.InputDialogParts;
+import model.*;
 import other.GetValueFromTextField;
 import window.*;
 
@@ -14,6 +16,7 @@ import window.*;
  */
 public class InputDialog{
     JDialog Dialog;
+    List<DataRecord> searchResult;
 
     /**
      * コンストラクタ
@@ -68,16 +71,8 @@ public class InputDialog{
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.weighty = 0.2;
-        JTextField SearchBox = new JTextField(8);
+        JTextField SearchBox = InputDialogParts.getSearchTextField();
         layout.setConstraints(SearchBox, gbc);
-
-        // 検索ボタン
-        gbc.gridx = 3;
-        gbc.gridy = 0;
-        gbc.weightx = 0.2;
-        gbc.weighty = 0.2;
-        JButton SearchButton = new JButton("Search");
-        layout.setConstraints(SearchButton, gbc);
 
         // ラベルProtein
         gbc.gridx = 0;
@@ -103,11 +98,47 @@ public class InputDialog{
         gbc.gridheight = 3;
         gbc.weightx = 0.5;
         gbc.weighty = 0.6;
-        JList list = new JList();
+        JList<String> resultList = InputDialogParts.getSearchResultList();
+        DefaultListModel<String> model = new DefaultListModel<String>();
+        resultList.setModel(model);
+        resultList.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JList<String> resultList = InputDialogParts.getSearchResultList();
+                if(resultList.isSelectionEmpty() == true){
+                    return;
+                }
+                JButton button = InputDialogParts.getInsertButton();
+                button.setEnabled(true);
+            }
+        });
         JScrollPane sp = new JScrollPane();
-        sp.getViewport().setView(list);
+        sp.getViewport().setView(resultList);
         sp.setPreferredSize(new Dimension(200, 80));
         layout.setConstraints(sp, gbc);
+
+        // 検索ボタン
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        gbc.weightx = 0.2;
+        gbc.weighty = 0.2;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        JButton SearchButton = InputDialogParts.getSearchButton();
+        SearchButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event){
+                String word = InputDialogParts.getSearchTextField().getText();
+                IHistoryData history = HistoryData.getInstanse();
+                searchResult = history.search(word);
+                model.removeAllElements();
+                for (DataRecord record : searchResult) {
+                    model.addElement(record.ItemName);
+                }
+                JButton button = InputDialogParts.getInsertButton();
+                button.setEnabled(false);
+            }
+        });
+        layout.setConstraints(SearchButton, gbc);
         
         // ラベルCarbohydrate
         gbc.gridx = 0;
@@ -142,8 +173,8 @@ public class InputDialog{
         gbc.gridy = 3;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
-        JTextField CalorieValue = new JTextField(8);
-        layout.setConstraints(CalorieValue, gbc);
+        JTextField LipidValue = new JTextField(8);
+        layout.setConstraints(LipidValue, gbc);
 
         // ラベルCalorie
         gbc.gridx = 0;
@@ -159,8 +190,8 @@ public class InputDialog{
         gbc.gridy = 4;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
-        JTextField LipidValue = new JTextField(8);
-        layout.setConstraints(LipidValue, gbc);
+        JTextField CalorieValue = new JTextField(8);
+        layout.setConstraints(CalorieValue, gbc);
 
         // 入力ボタン
         gbc.gridx = 2;
@@ -168,12 +199,28 @@ public class InputDialog{
         gbc.weightx = 0.5;
         gbc.weighty = 0.2;
         gbc.gridwidth = 2;
-        JButton InputButton = new JButton("Input");
+        JButton InputButton = InputDialogParts.getInsertButton();
+        // 入力ボタン押下時の処理
+        InputButton.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent event){
+                if(InputButton.isEnabled() == false){
+                    return;
+                }
+                JList<String> resultList = InputDialogParts.getSearchResultList();
+                int index = resultList.getSelectedIndex();
+                DataRecord record = searchResult.get(index);
+                ItemName.setText(record.ItemName);
+                ProteinValue.setText(String.format("%.2f", record.Protein));
+                CarbohydrateValue.setText(String.format("%.2f", record.Carbohydrate));
+                LipidValue.setText(String.format("%.2f", record.Lipid));
+                CalorieValue.setText(String.format("%.2f", record.Calorie));
+            }
+        });
+        InputButton.setEnabled(false);
         layout.setConstraints(InputButton, gbc);
 
         // 追加ボタン
         JButton registerButton = new JButton("ADD");
-
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent event){
@@ -181,6 +228,10 @@ public class InputDialog{
                 DataRecord record = GetValueFromTextField.GetValue(Dialog, ProteinValue, CarbohydrateValue, LipidValue, CalorieValue);
                 record.ItemName = inputItemName;
                 mainWindow.SetRecord(record);
+                // 履歴を残す
+                IHistoryData history = HistoryData.getInstanse();
+                history.add(record);
+                history.save();
 
                 // ダイアログを閉じる
                 Dialog.setVisible(false);

@@ -14,7 +14,6 @@ public class HistoryData implements IHistoryData {
     // 履歴データ
     private List<DataRecord> HistoryRecord;
 
-
     private static IHistoryData HistoryData = new HistoryData();
 
     /**
@@ -64,7 +63,8 @@ public class HistoryData implements IHistoryData {
                         record.Carbohydrate = Float.parseFloat(words[2]);
                         record.Lipid = Float.parseFloat(words[3]);
                         record.Calorie = Float.parseFloat(words[4]);
-                        HistoryRecord.add(record);
+                        this.HistoryRecord.add(record);
+                        line = br.readLine();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -98,13 +98,29 @@ public class HistoryData implements IHistoryData {
         return this.HistoryRecord;
     }
 
+    /**
+     * 履歴データ追加
+     */
     @Override
     public void add(DataRecord record) {
-
+        // 同じアイテムがあれば追加しない
+        for (DataRecord hist : this.HistoryRecord) {
+            if(hist.ItemName.indexOf(record.ItemName) == 0){
+                return;
+            }
+        }
+        this.HistoryRecord.add(record);
 	}
 
     @Override
     public List<DataRecord> search(String word) {
-        return null;
+        List<DataRecord> result = new ArrayList<DataRecord>();
+        for (DataRecord record : this.HistoryRecord) {
+            int ret = record.ItemName.indexOf(word);
+            if(record.ItemName.indexOf(word) >= 0){
+                result.add(record);
+            }             
+        }
+        return result;
     }
 }
