@@ -1,7 +1,6 @@
 package adapter;
 
 import java.util.List;
-import java.awt.datatransfer.Clipboard;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -109,6 +108,27 @@ public class TableClickAdapter extends MouseAdapter {
             });
             popupMenu.add(menuItemDelele);
             popupMenu.show(event.getComponent(), event.getX(), event.getY());
+        }else if(event.getButton() == MouseEvent.BUTTON1){
+            int indexs[] = this.mainWindow.getTable().getSelectedRows();
+            // 選択している行がないときは何もしない
+            if(indexs.length == 0){
+                ButtonControl.getEditButtonInstanse().setEnabled(false);
+                ButtonControl.getCopyButtonInstanse().setEnabled(false);
+                ButtonControl.getDeleteButtonInstanse().setEnabled(false);
+                return;
+            }
+            // 選択している行が合計の行だった場合
+            for (int index : indexs) {
+                if(index == 0){
+                    ButtonControl.getEditButtonInstanse().setEnabled(false);
+                    ButtonControl.getCopyButtonInstanse().setEnabled(false);
+                    ButtonControl.getDeleteButtonInstanse().setEnabled(false);
+                    return;
+                }
+            }
+            ButtonControl.getEditButtonInstanse().setEnabled(true);
+            ButtonControl.getCopyButtonInstanse().setEnabled(true);
+            ButtonControl.getDeleteButtonInstanse().setEnabled(true);
         }
     }
 }
