@@ -61,11 +61,9 @@ public class MainWindow implements IMainWindow{
         // データリストにデータを追加する
         this.dataRecord.add(inputDataRecord);
 
-        // テーブルにデータを追加する
-        //this.tableModelManager.InsertTableFromRecord(inputDataRecord);
-
         // 合計を算出し、テーブルを更新する
         tableModelManager.CreateTableFromRecords(this.dataRecord);
+        this.tableModelManager.UpdateTotal(dataRecord);
 
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -83,11 +81,9 @@ public class MainWindow implements IMainWindow{
         record.Lipid = editDataRecord.Lipid;
         record.Calorie = editDataRecord.Calorie;
 
-        // テーブルを更新する
-        //this.tableModelManager.UpdateRow(index, record);
-
         // 合計を算出し、テーブルを更新する
         tableModelManager.CreateTableFromRecords(this.dataRecord);
+        this.tableModelManager.UpdateTotal(dataRecord);
         
         // ファイルに出力する
         this.dataAccess.OutputFile(this.dataRecord);
@@ -241,28 +237,24 @@ public class MainWindow implements IMainWindow{
         JButton editButton = ButtonControl.getEditButtonInstanse();
         editButton.addMouseListener(new EditButtonClickAdapter(this));
         layout2.setConstraints(editButton, gbc2);
-        editButton.setEnabled(false);
  
         gbc2.gridx = 2;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton copyButton = ButtonControl.getCopyButtonInstanse();
         copyButton.addMouseListener(new CopyButtonClickAdapter(this));
         layout2.setConstraints(copyButton, gbc2);
-        copyButton.setEnabled(false);
 
         gbc2.gridx = 3;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
         JButton pasteButton = ButtonControl.getPasteButtonInstanse();
         pasteButton.addMouseListener(new PasteButtonClickAdapter(this));
         layout2.setConstraints(pasteButton, gbc2);
-        pasteButton.setEnabled(false);
 
         gbc2.gridx = 4;
         gbc2.fill = GridBagConstraints.HORIZONTAL;
-        JButton deleteButton = ButtonControl.getPasteButtonInstanse();
+        JButton deleteButton = ButtonControl.getDeleteButtonInstanse();
         deleteButton.addMouseListener(new DeleteButtonClickAdapter(this));
         layout2.setConstraints(deleteButton, gbc2);
-        deleteButton.setEnabled(false);
 
         panel2.add(addButton);
         panel2.add(editButton);
@@ -298,7 +290,9 @@ public class MainWindow implements IMainWindow{
         panel.add(panel2);
         panel.add(pane);
 
+        JLabel statusBar = StatusBarControl.getStatusBarInstanse();
         contentPane.add(panel);
+        this.frame.add(statusBar, BorderLayout.SOUTH);
 
         this.frame.setVisible(true);
     }

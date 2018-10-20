@@ -3,9 +3,11 @@ package model;
 public class ClipBoard implements IClipBoard{
     private static ClipBoard clipBoard= new ClipBoard();
     private static DataRecord storeData = null;
+    private static boolean isStore = false;
 
     private ClipBoard(){
-
+        storeData = null;
+        isStore = false;
     }
 
     public static IClipBoard getInstanse(){
@@ -20,17 +22,22 @@ public class ClipBoard implements IClipBoard{
         storeData.Carbohydrate = data.Carbohydrate;
         storeData.Lipid = data.Lipid;
         storeData.Calorie = data.Calorie;
+        isStore = true;
     }
 
     @Override
     public DataRecord Pull() {
-        return this.storeData;
+        return storeData;
     }
 
     @Override
     public void Clear() {
-        this.storeData = null;
+        storeData = null;
+        isStore = false;
     }
 
-
+    @Override
+    public boolean isStore(){
+        return isStore;
+    }
 }

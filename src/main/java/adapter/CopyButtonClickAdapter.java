@@ -2,10 +2,9 @@ package adapter;
 
 import java.awt.event.*;
 
-import dialog.*;
 import model.*;
 import window.*;
-import window.parts.ButtonControl;
+import window.parts.StatusBarControl;
 
 public class CopyButtonClickAdapter extends MouseAdapter {
     private IMainWindow mainWindow;
@@ -22,10 +21,14 @@ public class CopyButtonClickAdapter extends MouseAdapter {
      * ボタンクリック処理
      */
     public void mouseClicked(MouseEvent event){
-        int index = this.mainWindow.getTable().getSelectedRow() - 1;
-        DataRecord record = this.mainWindow.getDataRecords().get(index);
+        int select = this.mainWindow.getTable().getSelectedRow();
+        if(select < 1){
+            StatusBarControl.setStatusText("Can not copy...");
+            return;
+        }
+        DataRecord record = this.mainWindow.getDataRecords().get(select - 1);
         IClipBoard clip = ClipBoard.getInstanse();
         clip.Store(record);
-        ButtonControl.getPasteButtonInstanse().setEnabled(true);
+        StatusBarControl.setStatusText("Copied...");
     }
 }
