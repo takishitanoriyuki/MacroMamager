@@ -14,4 +14,9 @@ public interface IClipBoard{
      * データクリア
      */
     void Clear();
+    /**
+     * データの有無を調べる
+     * @return
+     */
+    boolean isStore();
 }
