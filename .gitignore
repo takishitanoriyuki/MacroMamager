@@ -9,3 +9,4 @@ data/*
 .idea/.name
 .gradle/buildOutputCleanup/cache.*
 
+.gradle/buildOutputCleanup/cache.properties

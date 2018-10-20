@@ -4,6 +4,7 @@ import java.awt.event.*;
 
 import dialog.*;
 import window.*;
+import window.parts.StatusBarControl;
 
 public class AddButtonClickAdapter extends MouseAdapter {
     private IMainWindow mainWindow;
@@ -22,6 +23,7 @@ public class AddButtonClickAdapter extends MouseAdapter {
     public void mouseClicked(MouseEvent event){
         InputDialog dialog = new InputDialog(this.mainWindow);
         dialog.Show();
+        StatusBarControl.setStatusText("Added...");
     }
 
 }

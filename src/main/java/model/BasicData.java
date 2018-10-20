@@ -9,9 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import lombok.Data;
-
-@Data
 public class BasicData implements IBasicData {
     // データフォルダ名
     private final String DATA_DIR = "data";

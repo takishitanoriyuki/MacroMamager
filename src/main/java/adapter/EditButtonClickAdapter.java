@@ -5,6 +5,7 @@ import java.awt.event.*;
 import dialog.*;
 import model.*;
 import window.*;
+import window.parts.StatusBarControl;
 
 public class EditButtonClickAdapter extends MouseAdapter {
     private IMainWindow mainWindow;
@@ -21,9 +22,14 @@ public class EditButtonClickAdapter extends MouseAdapter {
      * ボタンクリック処理
      */
     public void mouseClicked(MouseEvent event){
-        int index = this.mainWindow.getTable().getSelectedRow() - 1;
-        DataRecord record = this.mainWindow.getDataRecords().get(index);
-        EditDialog dialog = new EditDialog(this.mainWindow, index, record);
+        int select = this.mainWindow.getTable().getSelectedRow();
+        if(select < 1){
+            StatusBarControl.setStatusText("Can not edit...");
+            return;
+        }
+        DataRecord record = this.mainWindow.getDataRecords().get(select - 1);
+        EditDialog dialog = new EditDialog(this.mainWindow, select - 1, record);
         dialog.Show();
+        StatusBarControl.setStatusText("Edited...");
     }
 }
