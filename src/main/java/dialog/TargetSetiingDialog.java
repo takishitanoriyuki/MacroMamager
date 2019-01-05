@@ -4,15 +4,18 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+import dialog.parts.CalcDialog;
 import model.*;
 import window.*;
 
-public class TargetSetiingDialog {
+public class TargetSetiingDialog implements ITargetSettingDialog{
     JDialog Dialog;
+    TargetSetiingDialog TargetSetiingDialog;
     /**
      * コンストラクタ
      */
     public TargetSetiingDialog(IMainWindow mainWindow){
+        TargetSetiingDialog = this;
         targetSetiingDialog(mainWindow);
     }
     
@@ -21,6 +24,10 @@ public class TargetSetiingDialog {
      */
     public void Show(){
         Dialog.setVisible(true);
+    }
+
+    public JDialog getDialog(){
+        return Dialog;
     }
 
     /**
@@ -44,7 +51,16 @@ public class TargetSetiingDialog {
         JTextField CarbohydrateValue = new JTextField(String.format("%.2f", basicData.getCarbohydrate()));
         JTextField LipidValue = new JTextField(String.format("%.2f", basicData.getLipid()));
         JTextField CalorieValue = new JTextField(String.format("%.2f", basicData.getCalorie()));
+        JButton calcButton = new JButton("CALC");
         JButton registerButton = new JButton("SET");
+
+        // 計算ボタン押下時の処理
+        calcButton.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent event) {
+                CalcDialog calsDialog = new CalcDialog(TargetSetiingDialog);
+                calsDialog.Show();
+            }
+        });
 
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){
@@ -95,6 +111,7 @@ public class TargetSetiingDialog {
             }
         });
         // コントロールの配置
+        Dialog.add(calcButton, BorderLayout.NORTH);
         panel.add(label1);
         panel.add(ProteinValue);
         panel.add(label2);
