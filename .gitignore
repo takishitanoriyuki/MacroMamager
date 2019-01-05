@@ -10,3 +10,6 @@ data/*
 .gradle/buildOutputCleanup/cache.*
 
 .gradle/buildOutputCleanup/cache.properties
+*.bin
+*.xml
+*.lock
