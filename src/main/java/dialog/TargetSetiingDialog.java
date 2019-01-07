@@ -7,12 +7,19 @@ import javax.swing.*;
 import model.*;
 import window.*;
 
-public class TargetSetiingDialog {
+public class TargetSetiingDialog implements ITargetSettingDialog{
     JDialog Dialog;
+    TargetSetiingDialog TargetSetiingDialog;
+    JTextField ProteinValue;
+    JTextField CarbohydrateValue;
+    JTextField LipidValue;
+    JTextField CalorieValue;
+
     /**
      * コンストラクタ
      */
     public TargetSetiingDialog(IMainWindow mainWindow){
+        TargetSetiingDialog = this;
         targetSetiingDialog(mainWindow);
     }
     
@@ -21,6 +28,25 @@ public class TargetSetiingDialog {
      */
     public void Show(){
         Dialog.setVisible(true);
+    }
+
+    /**
+     * JDialogを返す
+     * @return
+     */
+    public JDialog getDialog(){
+        return Dialog;
+    }
+
+    /**
+     * 基本データを設定する
+     * @param record
+     */
+    public void setBasicData(DataRecord record){
+        this.ProteinValue.setText(String.format("%.2f", record.Protein));
+        this.CarbohydrateValue.setText(String.format("%.2f", record.Carbohydrate));
+        this.LipidValue.setText(String.format("%.2f", record.Lipid));
+        this.CalorieValue.setText(String.format("%.2f", record.Calorie));
     }
 
     /**
@@ -40,11 +66,20 @@ public class TargetSetiingDialog {
         JLabel label2 = new JLabel("Carbohydrate");
         JLabel label3 = new JLabel("Lipid");
         JLabel label4 = new JLabel("Calorie");
-        JTextField ProteinValue = new JTextField(String.format("%.2f", basicData.getProtein()));
-        JTextField CarbohydrateValue = new JTextField(String.format("%.2f", basicData.getCarbohydrate()));
-        JTextField LipidValue = new JTextField(String.format("%.2f", basicData.getLipid()));
-        JTextField CalorieValue = new JTextField(String.format("%.2f", basicData.getCalorie()));
+        this.ProteinValue = new JTextField(String.format("%.2f", basicData.getProtein()));
+        this.CarbohydrateValue = new JTextField(String.format("%.2f", basicData.getCarbohydrate()));
+        this.LipidValue = new JTextField(String.format("%.2f", basicData.getLipid()));
+        this.CalorieValue = new JTextField(String.format("%.2f", basicData.getCalorie()));
+        JButton calcButton = new JButton("CALC");
         JButton registerButton = new JButton("SET");
+
+        // 計算ボタン押下時の処理
+        calcButton.addMouseListener(new MouseAdapter(){
+            public void mouseClicked(MouseEvent event) {
+                CalcDialog calsDialog = new CalcDialog(TargetSetiingDialog);
+                calsDialog.Show();
+            }
+        });
 
         // 登録ボタン押下時の処理
         registerButton.addMouseListener(new MouseAdapter(){
@@ -95,6 +130,7 @@ public class TargetSetiingDialog {
             }
         });
         // コントロールの配置
+        Dialog.add(calcButton, BorderLayout.NORTH);
         panel.add(label1);
         panel.add(ProteinValue);
         panel.add(label2);
