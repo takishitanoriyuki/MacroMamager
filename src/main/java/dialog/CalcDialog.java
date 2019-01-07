@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 
 public class CalcDialog {
     private JDialog Dialog;
+    private ITargetSettingDialog Target;
 
     private final int PARAM_ERR = -1;
     // 性別
@@ -34,6 +35,7 @@ public class CalcDialog {
      * @param dialog
      */
     public CalcDialog(ITargetSettingDialog dialog){
+        this.Target = dialog;
         calcDialog(dialog);
     }
 
@@ -165,6 +167,10 @@ public class CalcDialog {
 
                 // 栄養素を計算する
                 DataRecord record = calcBasicData(sex, height, weight, age, activity, purpose);
+                // 結果を反映
+                Target.setBasicData(record);
+
+                Dialog.setVisible(false);
             }
         });
 
