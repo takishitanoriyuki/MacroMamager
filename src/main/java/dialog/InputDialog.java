@@ -66,12 +66,33 @@ public class InputDialog{
         JTextField ItemName = new JTextField(8);
         layout.setConstraints(ItemName, gbc);
 
+        DefaultListModel<String> model = new DefaultListModel<String>();
+
         // 検索テキストボックス
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.weightx = 0.3;
         gbc.weighty = 0.2;
         JTextField SearchBox = InputDialogParts.getSearchTextField();
+        SearchBox.addKeyListener(new KeyListener(){
+        
+            @Override
+            public void keyTyped(KeyEvent e) {
+                
+            }
+        
+            @Override
+            public void keyReleased(KeyEvent e) {
+                
+            }
+        
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode() == 10){
+                    doSearch(model);
+                }
+            }
+        });
         layout.setConstraints(SearchBox, gbc);
 
         // ラベルProtein
@@ -99,7 +120,6 @@ public class InputDialog{
         gbc.weightx = 0.5;
         gbc.weighty = 0.6;
         JList<String> resultList = InputDialogParts.getSearchResultList();
-        DefaultListModel<String> model = new DefaultListModel<String>();
         resultList.setModel(model);
         resultList.addMouseListener(new MouseAdapter(){
             @Override
@@ -127,15 +147,7 @@ public class InputDialog{
         JButton SearchButton = InputDialogParts.getSearchButton();
         SearchButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event){
-                String word = InputDialogParts.getSearchTextField().getText();
-                IHistoryData history = HistoryData.getInstanse();
-                searchResult = history.search(word);
-                model.removeAllElements();
-                for (DataRecord record : searchResult) {
-                    model.addElement(record.ItemName);
-                }
-                JButton button = InputDialogParts.getInsertButton();
-                button.setEnabled(false);
+                doSearch(model);
             }
         });
         layout.setConstraints(SearchButton, gbc);
@@ -255,5 +267,17 @@ public class InputDialog{
         panel.add(InputButton);
         contentPane.add(panel, BorderLayout.CENTER);
         Dialog.add(registerButton, BorderLayout.SOUTH);
+    }
+
+    private void doSearch(DefaultListModel<String> model){
+        String word = InputDialogParts.getSearchTextField().getText();
+        IHistoryData history = HistoryData.getInstanse();
+        searchResult = history.search(word);
+        model.removeAllElements();
+        for (DataRecord record : searchResult) {
+            model.addElement(record.ItemName);
+        }
+        JButton button = InputDialogParts.getInsertButton();
+        button.setEnabled(false);
     }
 }
