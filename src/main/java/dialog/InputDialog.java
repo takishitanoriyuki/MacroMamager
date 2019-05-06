@@ -267,6 +267,57 @@ public class InputDialog{
         panel.add(InputButton);
         contentPane.add(panel, BorderLayout.CENTER);
         Dialog.add(registerButton, BorderLayout.SOUTH);
+        Dialog.setFocusTraversalPolicy(new FocusTraversalPolicy(){
+        
+            @Override
+            public Component getLastComponent(Container aContainer) {
+                return InputButton;
+            }
+        
+            @Override
+            public Component getFirstComponent(Container aContainer) {
+                return ItemName;
+            }
+        
+            @Override
+            public Component getDefaultComponent(Container aContainer) {
+                return ItemName;
+            }
+        
+            @Override
+            public Component getComponentBefore(Container aContainer, Component aComponent) {
+                if (aComponent == ItemName) {
+                    return InputButton;
+                } else if (aComponent == InputButton) {
+                    return CalorieValue;
+                } else if (aComponent == CalorieValue) {
+                    return LipidValue;
+                } else if (aComponent == LipidValue) {
+                    return CarbohydrateValue;
+                } else if (aComponent == CarbohydrateValue) {
+                    return ProteinValue;
+                } else {
+                    return null;
+                }
+            }
+        
+            @Override
+            public Component getComponentAfter(Container aContainer, Component aComponent) {
+                if (aComponent == ItemName) {
+                    return ProteinValue;
+                } else if (aComponent == ProteinValue) {
+                    return CarbohydrateValue;
+                } else if (aComponent == CarbohydrateValue) {
+                    return LipidValue;
+                } else if (aComponent == LipidValue) {
+                    return CalorieValue;
+                } else if (aComponent == CalorieValue) {
+                    return InputButton;
+                } else {
+                    return null;
+                }
+            }
+        });
     }
 
     private void doSearch(DefaultListModel<String> model){
