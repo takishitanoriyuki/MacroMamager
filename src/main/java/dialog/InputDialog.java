@@ -238,6 +238,9 @@ public class InputDialog{
             public void mouseClicked(MouseEvent event){
                 String inputItemName = ItemName.getText();
                 DataRecord record = GetValueFromTextField.GetValue(Dialog, ProteinValue, CarbohydrateValue, LipidValue, CalorieValue);
+                if(record == null){
+                    return;
+                }
                 record.ItemName = inputItemName;
                 mainWindow.SetRecord(record);
                 // 履歴を残す

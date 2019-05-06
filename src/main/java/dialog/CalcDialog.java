@@ -142,17 +142,17 @@ public class CalcDialog {
                 // 身長
                 double height = getInputParameter(heightText);
                 if(height == PARAM_ERR){
-
+                    return;
                 }
                 // 体重
                 double weight = getInputParameter(weightText);
                 if(weight == PARAM_ERR){
-
+                    return;
                 }
                 // 年齢
                 double age = getInputParameter(ageText);
                 if(age == PARAM_ERR){
-
+                    return;
                 }
                 // アクティブ度
                 int activity = getActivityInputParameter(lowActiveRadioButton, middleActiveRadioButton, highActiveRadioButton);
