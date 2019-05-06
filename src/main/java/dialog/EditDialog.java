@@ -57,7 +57,10 @@ public class EditDialog{
             public void mouseClicked(MouseEvent event){
                 String inputItemName = ItemName.getText();
                 DataRecord record = GetValueFromTextField.GetValue(Dialog, ProteinValue, CarbohydrateValue, LipidValue, CalorieValue);
-                record.ItemName = inputItemName;
+                if(record == null){
+                    return;
+                }
+                 record.ItemName = inputItemName;
                 mainWindow.EditRecord(index, record);
 
                 // ダイアログを閉じる
