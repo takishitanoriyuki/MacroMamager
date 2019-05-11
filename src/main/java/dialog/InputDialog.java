@@ -154,7 +154,7 @@ public class InputDialog{
         
         // ラベルCarbohydrate
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
         gbc.gridwidth = 1;
@@ -165,7 +165,7 @@ public class InputDialog{
 
         // Carbohydrateテキストボックス
         gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
         JTextField CarbohydrateValue = new JTextField(8);
@@ -173,7 +173,7 @@ public class InputDialog{
 
         // ラベルLipid
         gbc.gridx = 0;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
         JLabel label4 = new JLabel("Lipid");
@@ -182,7 +182,7 @@ public class InputDialog{
 
         // Lipidテキストボックス
         gbc.gridx = 1;
-        gbc.gridy = 3;
+        gbc.gridy = 2;
         gbc.weightx = 0.25;
         gbc.weighty = 0.2;
         JTextField LipidValue = new JTextField(8);

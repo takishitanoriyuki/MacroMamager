@@ -133,10 +133,10 @@ public class TargetSetiingDialog implements ITargetSettingDialog{
         Dialog.add(calcButton, BorderLayout.NORTH);
         panel.add(label1);
         panel.add(ProteinValue);
-        panel.add(label2);
-        panel.add(CarbohydrateValue);
         panel.add(label3);
         panel.add(LipidValue);
+        panel.add(label2);
+        panel.add(CarbohydrateValue);
         panel.add(label4);
         panel.add(CalorieValue);
         Dialog.add(panel, BorderLayout.CENTER);
