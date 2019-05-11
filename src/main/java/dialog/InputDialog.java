@@ -248,6 +248,9 @@ public class InputDialog{
                 history.add(record);
                 history.save();
 
+                // 検索ボックスを殻にする
+                SearchBox.setText("");
+
                 // ダイアログを閉じる
                 Dialog.setVisible(false);
             }
