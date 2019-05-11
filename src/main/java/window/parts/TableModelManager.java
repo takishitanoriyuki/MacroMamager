@@ -18,8 +18,8 @@ public class TableModelManager implements ITableModelManager {
         this.tableModel = new DefaultTableModel();
         this.tableModel.addColumn("Item");
         this.tableModel.addColumn("Protein");
-        this.tableModel.addColumn("Carbohydrate");
         this.tableModel.addColumn("Lipid");
+        this.tableModel.addColumn("Carbohydrate");
         this.tableModel.addColumn("Calorie");
 
     }
@@ -39,8 +39,8 @@ public class TableModelManager implements ITableModelManager {
         // テーブルを更新する
         this.tableModel.setValueAt(record.ItemName, index + 1, 0);
         this.tableModel.setValueAt(String.format("%.2f", record.Protein), index + 1, 1);
-        this.tableModel.setValueAt(String.format("%.2f", record.Carbohydrate), index + 1, 2);
-        this.tableModel.setValueAt(String.format("%.2f", record.Lipid), index + 1, 3);
+        this.tableModel.setValueAt(String.format("%.2f", record.Lipid), index + 1, 2);
+        this.tableModel.setValueAt(String.format("%.2f", record.Carbohydrate), index + 1, 3);
         this.tableModel.setValueAt(String.format("%.2f", record.Calorie), index + 1, 4);
     }
 
@@ -89,8 +89,8 @@ public class TableModelManager implements ITableModelManager {
         Object[] row = new Object[5];
         row[0] = record.ItemName;
         row[1] = String.format("%.2f", record.Protein);
-        row[2] = String.format("%.2f", record.Carbohydrate);
-        row[3] = String.format("%.2f", record.Lipid);
+        row[2] = String.format("%.2f", record.Lipid);
+        row[3] = String.format("%.2f", record.Carbohydrate);
         row[4] = String.format("%.2f", record.Calorie);
         this.tableModel.insertRow(this.tableModel.getRowCount(), row);
     }
