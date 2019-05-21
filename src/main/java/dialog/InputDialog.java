@@ -297,10 +297,10 @@ public class InputDialog{
                 } else if (aComponent == InputButton) {
                     return CalorieValue;
                 } else if (aComponent == CalorieValue) {
-                    return LipidValue;
-                } else if (aComponent == LipidValue) {
                     return CarbohydrateValue;
                 } else if (aComponent == CarbohydrateValue) {
+                    return LipidValue;
+                } else if (aComponent == LipidValue) {
                     return ProteinValue;
                 } else {
                     return null;
@@ -312,10 +312,10 @@ public class InputDialog{
                 if (aComponent == ItemName) {
                     return ProteinValue;
                 } else if (aComponent == ProteinValue) {
-                    return CarbohydrateValue;
-                } else if (aComponent == CarbohydrateValue) {
                     return LipidValue;
                 } else if (aComponent == LipidValue) {
+                    return CarbohydrateValue;
+                } else if (aComponent == CarbohydrateValue) {
                     return CalorieValue;
                 } else if (aComponent == CalorieValue) {
                     return InputButton;
