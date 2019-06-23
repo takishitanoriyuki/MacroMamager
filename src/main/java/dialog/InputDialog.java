@@ -112,31 +112,6 @@ public class InputDialog{
         JTextField ProteinValue = new JTextField(8);
         layout.setConstraints(ProteinValue, gbc);
 
-        // 検索結果
-        gbc.gridx = 2;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        gbc.gridheight = 3;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.6;
-        JList<String> resultList = InputDialogParts.getSearchResultList();
-        resultList.setModel(model);
-        resultList.addMouseListener(new MouseAdapter(){
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                JList<String> resultList = InputDialogParts.getSearchResultList();
-                if(resultList.isSelectionEmpty() == true){
-                    return;
-                }
-                JButton button = InputDialogParts.getInsertButton();
-                button.setEnabled(true);
-            }
-        });
-        JScrollPane sp = new JScrollPane();
-        sp.getViewport().setView(resultList);
-        sp.setPreferredSize(new Dimension(200, 80));
-        layout.setConstraints(sp, gbc);
-
         // 検索ボタン
         gbc.gridx = 3;
         gbc.gridy = 0;
@@ -205,20 +180,18 @@ public class InputDialog{
         JTextField CalorieValue = new JTextField(8);
         layout.setConstraints(CalorieValue, gbc);
 
-        // 入力ボタン
+        // 検索結果
         gbc.gridx = 2;
-        gbc.gridy = 4;
-        gbc.weightx = 0.5;
-        gbc.weighty = 0.2;
+        gbc.gridy = 1;
         gbc.gridwidth = 2;
-        JButton InputButton = InputDialogParts.getInsertButton();
-        // 入力ボタン押下時の処理
-        InputButton.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent event){
-                if(InputButton.isEnabled() == false){
-                    return;
-                }
-                JList<String> resultList = InputDialogParts.getSearchResultList();
+        gbc.gridheight = 4;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.6;
+        JList<String> resultList = InputDialogParts.getSearchResultList();
+        resultList.setModel(model);
+        resultList.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
                 int index = resultList.getSelectedIndex();
                 DataRecord record = searchResult.get(index);
                 ItemName.setText(record.ItemName);
@@ -228,8 +201,10 @@ public class InputDialog{
                 CalorieValue.setText(String.format("%.2f", record.Calorie));
             }
         });
-        InputButton.setEnabled(false);
-        layout.setConstraints(InputButton, gbc);
+        JScrollPane sp = new JScrollPane();
+        sp.getViewport().setView(resultList);
+        sp.setPreferredSize(new Dimension(200, 80));
+        layout.setConstraints(sp, gbc);
 
         // 追加ボタン
         JButton registerButton = new JButton("ADD");
@@ -270,14 +245,13 @@ public class InputDialog{
         panel.add(LipidValue);
         panel.add(label5);
         panel.add(CalorieValue);
-        panel.add(InputButton);
         contentPane.add(panel, BorderLayout.CENTER);
         Dialog.add(registerButton, BorderLayout.SOUTH);
         Dialog.setFocusTraversalPolicy(new FocusTraversalPolicy(){
         
             @Override
             public Component getLastComponent(Container aContainer) {
-                return InputButton;
+                return ProteinValue;
             }
         
             @Override
@@ -293,8 +267,6 @@ public class InputDialog{
             @Override
             public Component getComponentBefore(Container aContainer, Component aComponent) {
                 if (aComponent == ItemName) {
-                    return InputButton;
-                } else if (aComponent == InputButton) {
                     return CalorieValue;
                 } else if (aComponent == CalorieValue) {
                     return CarbohydrateValue;
@@ -302,6 +274,8 @@ public class InputDialog{
                     return LipidValue;
                 } else if (aComponent == LipidValue) {
                     return ProteinValue;
+                } else if (aComponent == ProteinValue) {
+                    return ItemName;
                 } else {
                     return null;
                 }
@@ -318,7 +292,7 @@ public class InputDialog{
                 } else if (aComponent == CarbohydrateValue) {
                     return CalorieValue;
                 } else if (aComponent == CalorieValue) {
-                    return InputButton;
+                    return ItemName;
                 } else {
                     return null;
                 }
