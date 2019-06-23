@@ -269,10 +269,12 @@ public class InputDialog{
                 if (aComponent == ItemName) {
                     return CalorieValue;
                 } else if (aComponent == CalorieValue) {
-                    return LipidValue;
-                } else if (aComponent == LipidValue) {
                     return CarbohydrateValue;
                 } else if (aComponent == CarbohydrateValue) {
+                    return LipidValue;
+                } else if (aComponent == LipidValue) {
+                    return ProteinValue;
+                } else if (aComponent == ProteinValue) {
                     return ItemName;
                 } else {
                     return null;
